@@ -6,8 +6,7 @@ import org.joda.time.Years;
 
 public class DayCount {
 	public  static final DayCountConventionInterface DC_30360        = new DayCount30360();
-//	public  static final DayCountConventionInterface DC_ACTUAL360    = new DayCountActual360();
-//	public  static final DayCountConventionInterface DC_ACTUALACTUAL = new DayCountActualActual();
+	public  static final DayCountConventionInterface DC_ACTUALACTUAL = new DayCountActualActual();
 
 	/**
 	 * prohibit instantiation of this class, as it's a utility class 
@@ -29,7 +28,7 @@ public class DayCount {
 			throw new IllegalArgumentException( "paymentFrequency = " + paymentFrequency + " is illegal. It should be a divisor of 12" );
 			
 		LocalDate nextPaymentSettleDate = accrualStartDate.plus(Months.months(12/paymentFrequency));
-		return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, 1);
+		return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, paymentFrequency);
 	}
 
 	/**
