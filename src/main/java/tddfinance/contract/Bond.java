@@ -15,7 +15,7 @@ import org.joda.time.Years;
 //FixMe: Day Count Convention
 //FixMe: compounding frequency??
 
-public class Bond extends AbstractBaseContract{
+public class Bond extends AbstractBaseContract implements CashflowListInterface{
 	private final ContractAdd self; //ContractAdd {Cashflow1, Cashflow2, ...}
 
 //	private Currency       currency;

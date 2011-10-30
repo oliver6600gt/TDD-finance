@@ -7,6 +7,7 @@ import org.joda.time.Years;
 import org.junit.Test;
 
 import tddfinance.contract.Bond;
+import tddfinance.contract.Cash;
 import tddfinance.contract.Currency;
 import tddfinance.curve.FlatCurve;
 import tddfinance.pricer.CurvePricer;
@@ -30,4 +31,17 @@ public class CurvePricerTest {
 		}
 	}
 
+	@Test
+	public void priceInvalidContractTypeTest() {
+		try {
+			Pricer pricer = new CurvePricer( new FlatCurve(new LocalDate(2000, 4, 1), 0.1) );
+			pricer.price(Cash.USD);
+			fail( "This line should not be reached as the above line has to throw an exception" );
+		} catch (Exception e) {
+			String expectedExceptionSubString = "Contract of class " + Cash.class.toString() + " cannot be handled by CurvePricer";
+			assertTrue(
+				"The following exception message:\n" + e.getMessage() + "\nmust Contains the following string:\n" + expectedExceptionSubString,
+				e.getMessage().contains(expectedExceptionSubString));		
+		}
+	}
 }

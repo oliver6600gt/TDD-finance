@@ -2,8 +2,8 @@ package tddfinance.pricer;
 
 import org.joda.time.LocalDate;
 
-import tddfinance.contract.Bond;
 import tddfinance.contract.Cashflow;
+import tddfinance.contract.CashflowListInterface;
 import tddfinance.contract.Contract;
 import tddfinance.curve.Curve;
 import tddfinance.day.DayCount;
@@ -18,14 +18,14 @@ public class CurvePricer implements Pricer {
 	
 	public double price(Contract contract) throws Exception {
 		
-		if(contract instanceof Bond){
-			Bond   bond  = (Bond) contract;
+		if(contract instanceof CashflowListInterface){
+			CashflowListInterface cashflowList  = (CashflowListInterface) contract;
 	
 			double price = 0.0;
 			double annualizedPeriod = 0.0;
 			LocalDate previousPeriodEndDate = curve.baseDate();
 			
-			for (Cashflow cashflow : bond.cashflowList()) {
+			for (Cashflow cashflow : cashflowList.cashflowList()) {
 				
 				//maybe annualized period should depend on the day count convention of the product? 
 				annualizedPeriod += DayCount.fraction(DayCount.DC_ACTUALACTUAL, previousPeriodEndDate, cashflow.settlementDate(), cashflow.settlementDate());
