@@ -1,6 +1,7 @@
 package tddfinance.contract;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import tddfinance.numeral.AnnualizedPeriod;
@@ -196,7 +197,14 @@ public class CashflowSet extends AbstractBaseContract{
 		return false;
 	}
 
-	public List<Contract> cashflowList() {
-		return ((ContractAdd)representation()).getList();
+	public List<Cashflow> cashflowList() {
+		List<Cashflow> cashflows    = new LinkedList<Cashflow>();
+		List<Contract> contractlist = ((ContractAdd)representation()).getList();
+		
+		for (Contract contract : contractlist) {
+			cashflows.add((Cashflow) contract);
+		}
+		
+		return cashflows;
 	}
 }
