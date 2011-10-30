@@ -57,7 +57,7 @@ public class CashflowSetTest {
 
 		CashflowSet cashflowSet = new CashflowSet( Currency.USD, quantity, couponRate, new LocalDate(2000,5,6), Years.years(4), couponPeriod );
 
-		//firstPaymentDate = 2000-5-6, semi-annual => first coupond date = 2000-11-6
+		//tenorStartDate = 2000-5-6, semi-annual => first coupon date = 2000-11-6
 		List<Contract> expectedCashflows = new ArrayList<Contract>();
 		expectedCashflows.add( new Cashflow(new LocalDate(2000,11,6), couponAmount, Currency.USD) );
 		expectedCashflows.add( new Cashflow(new LocalDate(2001,5,6),  couponAmount, Currency.USD) );
