@@ -7,8 +7,10 @@ import static org.junit.Assert.*;
 //
 //import org.joda.time.LocalDate;
 //import org.joda.time.Years;
-//import org.junit.Test;
-//
+import org.joda.time.Months;
+import org.joda.time.Years;
+import org.junit.Test;
+
 //import tddfinance.contract.Bond;
 //import tddfinance.contract.Currency;
 //import tddfinance.curve.Curve;
@@ -18,8 +20,10 @@ public class YieldCalculatorTest {
 
 	@Test
 	public void futureValueTest() throws Exception {
-		assertEquals( 105.0,  YieldCalculator.futureValue( 100, 0.05, 1 ), 1.0e-6 );	
-		assertEquals( 110.25, YieldCalculator.futureValue( 100, 0.05, 2 ), 1.0e-6 );	
+		assertEquals( 105.0,    YieldCalculator.futureValue( 100, 0.05, Years.years(1) ), 1.0e-6 );	
+		assertEquals( 110.25,   YieldCalculator.futureValue( 100, 0.05, Years.years(2) ), 1.0e-6 );	
+		assertEquals( 105.0,    YieldCalculator.futureValue( 100, 0.05, Months.months(12) ), 1.0e-6 );	
+		assertEquals( 105.0625, YieldCalculator.futureValue( 100, 0.05, Months.months(12), 2 ), 1.0e-6 );	
 	}
 	
 //	@Test

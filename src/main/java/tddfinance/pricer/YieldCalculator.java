@@ -1,10 +1,25 @@
 package tddfinance.pricer;
 
+import org.joda.time.ReadablePeriod;
+
+import tddfinance.numeral.AnnualizedPeriod;
+
 public class YieldCalculator {
 
-	public static double futureValue(double quantity, double rate, int years) {
-		// TODO Auto-generated method stub
-		return quantity * Math.pow( 1.0 + rate, years );
+	/**
+	 * The future value of the quantity, when you invest it in the yield for the period with the annual payment frequency  
+	 */
+	public static double futureValue(double quantity, double yield, ReadablePeriod period) {
+		AnnualizedPeriod p = new AnnualizedPeriod(period);
+		return quantity * Math.pow( 1.0 + yield, p.getValue() );
+	}
+
+	/**
+	 * The future value of the quantity, when you invest it in the yield for the period with the paymentFrequency  
+	 */
+	public static double futureValue(double quantity, double yield, ReadablePeriod period, int paymentFrequency) {
+		AnnualizedPeriod p = new AnnualizedPeriod(period);
+		return quantity * Math.pow( 1.0 + yield / paymentFrequency, paymentFrequency * p.getValue() );
 	}
 
 //	/**
