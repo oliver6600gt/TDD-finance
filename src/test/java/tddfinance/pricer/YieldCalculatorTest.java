@@ -2,19 +2,19 @@ package tddfinance.pricer;
 
 import static org.junit.Assert.*;
 
-//import java.util.Map;
-//import java.util.TreeMap;
-//
-//import org.joda.time.LocalDate;
-//import org.joda.time.Years;
-import org.joda.time.Months;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.joda.time.LocalDate;
 import org.joda.time.Years;
+import org.joda.time.Months;
 import org.junit.Test;
 
-//import tddfinance.contract.Bond;
-//import tddfinance.contract.Currency;
-//import tddfinance.curve.Curve;
-//import tddfinance.curve.DiscreteCurve;
+import tddfinance.contract.Bond;
+import tddfinance.contract.Currency;
+import tddfinance.curve.Curve;
+import tddfinance.curve.DiscreteCurve;
+import tddfinance.curve.FlatCurve;
 
 public class YieldCalculatorTest {
 
@@ -26,21 +26,34 @@ public class YieldCalculatorTest {
 		assertEquals( 105.0625, YieldCalculator.futureValue( 100, 0.05, Months.months(12), 2 ), 1.0e-6 );	
 	}
 	
-//	@Test
-//	public void annualRateOfReturnTest() throws Exception {
-//		LocalDate baseDate = new LocalDate(2001, 4, 1);
-//		Map<LocalDate, Double> curveValues = new TreeMap<LocalDate, Double>();
-//		curveValues.put(baseDate.plusYears(1), 0.04);
-//		curveValues.put(baseDate.plusYears(2), 0.045);
-//		curveValues.put(baseDate.plusYears(3), 0.0475);
-//		curveValues.put(baseDate.plusYears(4), 0.049);
-//		curveValues.put(baseDate.plusYears(5), 0.05);
-//				
-//		//zero-coupon -> reinvestment rate assuming you will get all the return from "re-"investment at maturity
-//		Curve zeroCouponRates = new DiscreteCurve( baseDate, curveValues ); 
-//		
-//		Bond  bond = new Bond(Currency.USD, 100, 5.0, baseDate, Years.years(5) );
-//		
-//		assertEquals(0.049686, YieldCaululator.annualRateOfReturn(bond, zeroCouponRates), 1.0e-6);	
-//	}
+	@Test
+	public void annualRateOfReturnTest() throws Exception {
+		LocalDate baseDate = new LocalDate(2001, 4, 1);
+		Map<LocalDate, Double> curveValues = new TreeMap<LocalDate, Double>();
+		curveValues.put(baseDate.plusYears(1), 0.038);
+		curveValues.put(baseDate.plusYears(2), 0.041);
+		curveValues.put(baseDate.plusYears(3), 0.0435);
+		curveValues.put(baseDate.plusYears(4), 0.0481);
+		curveValues.put(baseDate.plusYears(5), 0.0502);
+				
+		//zero-coupon -> reinvestment rate assuming you will get all the return from "re-"investment at maturity
+		Curve zeroCouponRates = new DiscreteCurve( baseDate, curveValues ); 
+		
+		Bond  bond = new Bond(Currency.USD, 100, 0.04, baseDate, Years.years(5) );
+		
+		assertEquals(0.0493207, YieldCalculator.annualRateOfReturn(bond, zeroCouponRates, Years.years(5), Years.years(1)), 1.0e-6);	
+	}
+
+	@Test
+	public void annualRateOfReturnYTMTest() throws Exception {
+		LocalDate baseDate = new LocalDate(2001, 4, 1);
+				
+		//zero-coupon -> reinvestment rate assuming you will get all the return from "re-"investment at maturity
+		Curve zeroCouponRates = new FlatCurve( baseDate, 0.02 ); 
+		
+		Bond  bond = new Bond(Currency.USD, 100, 0.04, baseDate, Years.years(5) );
+		
+		//If you re-invest intermidiate cashflows @YTM, YTM = annual rate of return 
+		assertEquals(0.02, YieldCalculator.annualRateOfReturn(bond, zeroCouponRates, Years.years(5), Years.years(1)), 1.0e-6);	
+	}
 }
