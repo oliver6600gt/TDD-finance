@@ -7,7 +7,7 @@ import tddfinance.numeral.AnnualizedPeriod;
 public class YieldCalculator {
 
 	/**
-	 * The future value of the quantity, when you invest it in the yield for the period with the annual payment frequency  
+	 * The future value of the quantity, when you invest it in the yield for the period with the annual compounding frequency  
 	 */
 	public static double futureValue(double quantity, double yield, ReadablePeriod period) {
 		AnnualizedPeriod p = new AnnualizedPeriod(period);
@@ -15,11 +15,11 @@ public class YieldCalculator {
 	}
 
 	/**
-	 * The future value of the quantity, when you invest it in the yield for the period with the paymentFrequency  
+	 * The future value of the quantity, when you invest it in the yield for the period with the compoundingFrequency  
 	 */
-	public static double futureValue(double quantity, double yield, ReadablePeriod period, int paymentFrequency) {
+	public static double futureValue(double quantity, double yield, ReadablePeriod period, int compoundingFrequency) {
 		AnnualizedPeriod p = new AnnualizedPeriod(period);
-		return quantity * Math.pow( 1.0 + yield / paymentFrequency, paymentFrequency * p.getValue() );
+		return quantity * Math.pow( 1.0 + yield / compoundingFrequency, compoundingFrequency * p.getValue() );
 	}
 
 //	/**
