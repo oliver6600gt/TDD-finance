@@ -65,6 +65,16 @@ public class DiscreteCurveTest {
 	}
 	
 	@Test
+	public void horizontalShiftNegativeTest() throws Exception {
+		Curve shiftedCurve = sampleCurve.horizontalShiftNegative(Years.years(2));
+		assertEquals(0.040,  shiftedCurve.getValue(new LocalDate(2010 - 2, 4, 1)), 1.0e-6);
+		assertEquals(0.045,  shiftedCurve.getValue(new LocalDate(2011 - 2, 4, 1)), 1.0e-6);
+		assertEquals(0.0475, shiftedCurve.getValue(new LocalDate(2012 - 2, 4, 1)), 1.0e-6);
+		assertEquals(0.049,  shiftedCurve.getValue(new LocalDate(2013 - 2, 4, 1)), 1.0e-6);
+		assertEquals(0.05,   shiftedCurve.getValue(new LocalDate(2014 - 2, 4, 1)), 1.0e-6);
+	}
+	
+	@Test
 	public void forwartdRate() throws Exception {
 		LocalDate today = new LocalDate(2010, 4, 1);
 		

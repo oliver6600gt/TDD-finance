@@ -112,6 +112,15 @@ public class DiscreteCurve implements Curve {
 		return offsetCurve;
 	}
 	
+	public Curve horizontalShiftNegative(ReadablePeriod horizontalOffset) throws Exception {
+		DiscreteCurve offsetCurve = new DiscreteCurve(baseDate().plus(horizontalOffset));
+
+		for (LocalDate date : this.curveValues.keySet()) 
+			offsetCurve.curveValues.put(date.minus(horizontalOffset) , this.getValue(date));		
+
+		return offsetCurve;
+	}
+	
 	@Override
 	public String toString() {
 		return new String( "DiscreteCurve with the following values\n" + curveValues.toString() );

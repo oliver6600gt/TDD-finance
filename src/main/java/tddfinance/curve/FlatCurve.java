@@ -32,6 +32,10 @@ public class FlatCurve implements Curve {
 		return new FlatCurve(baseDate().plus(horizontalOffset), this.value);
 	}
 
+	public Curve horizontalShiftNegative(ReadablePeriod horizontalOffset) throws Exception {
+		return new FlatCurve(baseDate().minus(horizontalOffset), this.value);
+	}
+
 	public String toString() {
 		Double valueInDouble = value;
 		return new String( "FlatCurve with the following value: " + valueInDouble.toString() + "\n" ); 

@@ -27,6 +27,15 @@ public class FlatCurveTest {
 	}
 	
 	@Test
+	public void horizontalShiftNegativeTest() throws Exception {
+		Curve curve        = new FlatCurve(today, 0.042);
+		Curve shiftedCurve = curve.horizontalShiftNegative(Years.years(6));
+		assertEquals(0.042, shiftedCurve.getValue(new LocalDate(2010 - 6, 4, 1)), 1.0e-6);
+		assertEquals(0.042, shiftedCurve.getValue(new LocalDate(2011 - 6, 4, 1)), 1.0e-6);
+		assertEquals(0.042, shiftedCurve.getValue(new LocalDate(2012 - 6, 4, 1)), 1.0e-6);	
+	}
+
+	@Test
 	public void forwardCurveTest() throws Exception {
 		Curve curve = new FlatCurve(today, 0.042);
 		assertEquals(0.042, curve.forwardValue(Years.years(1), Months.months(6), 1), 1.0e-6);

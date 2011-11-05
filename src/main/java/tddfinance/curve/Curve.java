@@ -32,10 +32,17 @@ public interface Curve {
 	
 	/**
 	 * Create a new curve horizontally-offset by a value, "horizontalOffset" parameter
-	 * @param  horizontalOffset - value to offset the curve in a horizontal direction
+	 * @param  horizontalOffset - value to offset the curve in the positive horizontal direction
 	 * @return a new Curve horizontally offset by the given value
 	 * @throws Exception
 	 */
 	public Curve horizontalShift(ReadablePeriod horizontalOffset) throws Exception;
 
+	/**
+	 * Create a new curve horizontally-offset by a value, "horizontalOffset" parameter, but in the negative direction
+	 * @param  horizontalOffset - value to offset the curve in the negative horizontal direction
+	 * @return a new Curve horizontally offset by the given value
+	 * @throws Exception
+	 */
+	public Curve horizontalShiftNegative(ReadablePeriod horizontalOffset) throws Exception;
 }
