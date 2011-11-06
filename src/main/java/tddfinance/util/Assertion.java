@@ -87,6 +87,49 @@ public class Assertion {
 		}
 	}
 
+	/**
+	 * Put this wherever you want, and the program will fail with the following message.<br>
+	 * "Unexpected to hit this line, as the previous statement should thrown an exception"
+	 */
+	public static void failUnexpectedToReachThis()
+	{
+		fail( "Unexpected to hit this line, as the previous statement should thrown an exception" ); 
+	}
+	
+	/**
+	 * Assert the Exception e to have the expected sub string. Typically you can use this as follows:
+	 * <p> 
+	 * try { stuff you expect to throw an exception; failUnexpected(); } <br> 
+	 * catch (Exception e) { assertExceptionMessage( e, "the string you expect inside the exception" ); };
+	 *	
+	 * @param e
+	 * @param expectedExceptionSubString
+	 */
+	public static void assertExceptionMessage( Exception e, String expectedExceptionSubString )
+	{
+		assertTrue(
+			"The following exception message:\n" + e.getMessage() + "\nmust Contains the following string:\n" + expectedExceptionSubString,
+			e.getMessage().contains(expectedExceptionSubString));		
+	}
+
+	/**
+	 * Assert the Exception e to have the expected sub string, and with the expected type. Typically you can use this as follows:
+	 * <p> 
+	 * try { stuff you expect to throw an exception; failUnexpected(); } <br> 
+	 * catch (Exception e) { assertExceptionMessage( e, "the string you expect inside the exception", ExpectedExceptionType.class ); };
+	 *	
+	 * @param e
+	 * @param expectedExceptionSubString
+	 * @param exceptionType
+	 */
+	public static void assertExceptionMessage( Exception e, String expectedExceptionSubString, Class<?> exceptionType )
+	{
+		assertTrue( "Exception e (" + e.getClass().toString() + ") is not an instance of " + exceptionType.toString(), exceptionType.isInstance(e) );
+		assertTrue(
+			"The following exception message:\n" + e.getMessage() + "\nmust Contains the following string:\n" + expectedExceptionSubString,
+			e.getMessage().contains(expectedExceptionSubString));		
+	}
+
 	public static void assertInEqual( Object expected, Object actual ){
 		assertTrue( 
 			String.format("%s is expected to be inequal to %s", expected, actual), 

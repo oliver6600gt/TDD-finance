@@ -8,6 +8,8 @@ import java.util.TreeMap;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import static tddfinance.util.Assertion.*;
+
 public class LinearInterpolatedCurveTest {
 
 	static final LocalDate today       = new LocalDate(2009, 4, 1);
@@ -34,5 +36,11 @@ public class LinearInterpolatedCurveTest {
 		assertEquals(0.037625,sampleCurve.getValue(new LocalDate(2012, 5,  1)), 1.0e-5);
 		assertEquals(0.039,   sampleCurve.getValue(new LocalDate(2013, 4,  1)), 1.0e-6);
 		assertEquals(0.04,    sampleCurve.getValue(new LocalDate(2014, 4,  1)), 1.0e-6);
+	}
+	
+	@Test
+	public void getValueExceptionTest() throws Exception {
+		try { sampleCurve.getValue( new LocalDate(2008, 4,  1) ); failUnexpectedToReachThis(); } 
+		catch (Exception e) { assertExceptionMessage( e, "is outside of the value range of this curve", String.class ); };
 	}
 }
