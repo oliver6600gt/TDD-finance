@@ -8,13 +8,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.ReadablePeriod;
 
 public class LinearInterpolatedCurve implements Curve {
-	private LocalDate              baseDate;
-	private Map<LocalDate, Double> curveValues;
-	
-	private LinearInterpolatedCurve(LocalDate baseDate) {
-		this.baseDate    = baseDate;
-		this.curveValues = new TreeMap<LocalDate, Double>();
-	}
+	private final LocalDate              baseDate;
+	private final Map<LocalDate, Double> curveValues;
 	
 	public LinearInterpolatedCurve(LocalDate baseDate, Map<LocalDate, Double> curveValues) {
 		this.baseDate    = baseDate;
@@ -78,30 +73,30 @@ public class LinearInterpolatedCurve implements Curve {
 	}
 
 	public Curve parralelShift(double offset) throws Exception {
-		LinearInterpolatedCurve offsetCurve = new LinearInterpolatedCurve(baseDate());
+		Map<LocalDate, Double> newCurveValues = new TreeMap<LocalDate, Double>();
 
 		for (LocalDate date : this.curveValues.keySet()) 
-			offsetCurve.curveValues.put(date, this.getValue(date)+offset);		
+			newCurveValues.put(date, this.getValue(date)+offset);	
 
-		return offsetCurve;
+		return new LinearInterpolatedCurve(baseDate(), newCurveValues);
 	}
 
 	public Curve horizontalShift(ReadablePeriod horizontalOffset) throws Exception {
-		LinearInterpolatedCurve offsetCurve = new LinearInterpolatedCurve(baseDate().plus(horizontalOffset));
+		Map<LocalDate, Double> newCurveValues = new TreeMap<LocalDate, Double>();
 
 		for (LocalDate date : this.curveValues.keySet()) 
-			offsetCurve.curveValues.put(date.plus(horizontalOffset) , this.getValue(date));		
+			newCurveValues.put(date.plus(horizontalOffset) , this.getValue(date));		
 
-		return offsetCurve;
+		return new LinearInterpolatedCurve(baseDate(), newCurveValues);
 	}
 	
 	public Curve horizontalShiftNegative(ReadablePeriod horizontalOffset) throws Exception {
-		LinearInterpolatedCurve offsetCurve = new LinearInterpolatedCurve(baseDate().plus(horizontalOffset));
+		Map<LocalDate, Double> newCurveValues = new TreeMap<LocalDate, Double>();
 
 		for (LocalDate date : this.curveValues.keySet()) 
-			offsetCurve.curveValues.put(date.minus(horizontalOffset) , this.getValue(date));		
+			newCurveValues.put(date.minus(horizontalOffset) , this.getValue(date));		
 
-		return offsetCurve;
+		return new LinearInterpolatedCurve(baseDate(), newCurveValues);
 	}
 
 }

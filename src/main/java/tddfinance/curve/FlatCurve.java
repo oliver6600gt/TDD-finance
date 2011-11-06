@@ -4,8 +4,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.ReadablePeriod;
 
 public class FlatCurve implements Curve {
-	private LocalDate baseDate;
-	private double    value;
+	private final LocalDate baseDate;
+	private final double    value;
 	
 	public FlatCurve(LocalDate baseDate, double value) {
 		this.baseDate = baseDate;
