@@ -1,7 +1,9 @@
 package tddfinance.curve;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static tddfinance.util.Assertion.assertExceptionMessage;
+import static tddfinance.util.Assertion.failUnexpectedToReachThis;
+
 import java.util.Map;
 import java.util.TreeMap;
 import org.joda.time.LocalDate;
@@ -40,18 +42,8 @@ public class DiscreteCurveTest {
 	@Test
 	public void getValueInvalidTest() throws Exception {
 		LocalDate Apr1st2015 = new LocalDate(2015, 4, 1);
-
-		try {
-			assertNotNull(sampleCurve.getValue(Apr1st2015));			
-		} 
-		catch (Exception e) {
-			String expectedMessage = Apr1st2015.toString() + " is not a valid date for this curve";
-			
-			assertThat( 
-					"\nactual messange:\n" + e.getMessage() + "\ndoes not contain the expected message:\n" + expectedMessage, 
-					e.getMessage().contains( expectedMessage ),
-					is(true));
-		}
+		try { sampleCurve.getValue(Apr1st2015 ); failUnexpectedToReachThis(); } 
+		catch (Exception e) { assertExceptionMessage( e, Apr1st2015.toString() + " is not a valid date for this curve" ); };
 	}
 	
 	@Test

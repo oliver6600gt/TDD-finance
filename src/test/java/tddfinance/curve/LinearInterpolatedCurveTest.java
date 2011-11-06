@@ -41,6 +41,6 @@ public class LinearInterpolatedCurveTest {
 	@Test
 	public void getValueExceptionTest() throws Exception {
 		try { sampleCurve.getValue( new LocalDate(2008, 4,  1) ); failUnexpectedToReachThis(); } 
-		catch (Exception e) { assertExceptionMessage( e, "is outside of the value range of this curve", String.class ); };
+		catch (Exception e) { assertExceptionMessage( e, "is outside of the value range of this curve" ); };
 	}
 }
