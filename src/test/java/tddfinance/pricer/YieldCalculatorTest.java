@@ -59,8 +59,12 @@ public class YieldCalculatorTest {
 	
 	@Test
 	public void zeroCouponRateTest() throws Exception {
-		assertEquals(0.014075, YieldCalculator.zeroCouponRate(98.612, Years.years(1)), 1.0e-6);
-		assertEquals(0.030747, YieldCalculator.zeroCouponRate(94.123, Years.years(2)), 1.0e-6);
-		assertEquals(0.035932, YieldCalculator.zeroCouponRate(89.951, Years.years(3)), 1.0e-6);
+		assertEquals(0.014075, YieldCalculator.zeroCouponRate(98.612,  Years.years(1), 1), 1.0e-6);
+		assertEquals(0.030747, YieldCalculator.zeroCouponRate(94.123,  Years.years(2), 1), 1.0e-6);
+		assertEquals(0.035932, YieldCalculator.zeroCouponRate(89.951,  Years.years(3), 1), 1.0e-6);
+		
+		assertEquals(0.050000, YieldCalculator.zeroCouponRate(95.2381, Years.years(1), 1), 1.0e-6);
+		assertEquals(0.050000, YieldCalculator.zeroCouponRate(95.1814, Years.years(1), 2), 1.0e-6);
+		assertEquals(0.050000, YieldCalculator.zeroCouponRate(97.5610, Months.months(6), 2), 1.0e-6);
 	}
 }

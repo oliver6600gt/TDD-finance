@@ -69,11 +69,11 @@ public class YieldCalculator {
 	}
 
 	/**
-	 *  only annual compounding frequency at the moment
+	 *  Calculate the zero coupon rate of periodToMaturity from price
 	 */
-	public static double zeroCouponRate(double price, ReadablePeriod periodToMaturity) {
+	public static double zeroCouponRate(double price, ReadablePeriod periodToMaturity, int compoundingFrequency) {
 		AnnualizedPeriod p = new AnnualizedPeriod(periodToMaturity);
-		return Math.pow(100/price, 1.0/p.getValue()) - 1;
+		return compoundingFrequency * ( Math.pow( 100/price, 1.0/(compoundingFrequency*p.getValue() ) ) - 1 );
 	}
 
 }
