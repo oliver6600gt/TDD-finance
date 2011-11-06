@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.joda.time.ReadablePeriod;
-import org.joda.time.Years;
 
 import tddfinance.contract.Cashflow;
 import tddfinance.contract.CashflowListInterface;
