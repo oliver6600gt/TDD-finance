@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.joda.time.ReadablePeriod;
+import org.joda.time.Years;
 
 import tddfinance.contract.Cashflow;
 import tddfinance.contract.CashflowListInterface;
@@ -31,7 +32,7 @@ public class YieldCalculator {
 	/**
 	 * Return the annual rate of return of contract, assuming zeroCouponRateCurve remains unchanged over time
 	 */
-	public static double annualRateOfReturn ( CashflowListInterface contract, Curve zeroCouponRateCurve, ReadablePeriod tenor, ReadablePeriod paymentPeriod ) throws Exception {
+	public static double annualRateOfReturn ( CashflowListInterface contract, Curve zeroCouponRateCurve, ReadablePeriod periodToMaturity, ReadablePeriod paymentPeriod ) throws Exception {
 		double futureValue = 0.0;
 		double annualizedPeriodToMaturity = 0.0;
 		
@@ -39,7 +40,7 @@ public class YieldCalculator {
 		ListIterator<Cashflow> lastIterator = cashflowList.listIterator( cashflowList.size() );
 		
 		//horizontal shift - assuming the zero curve remains unchanged
-		Curve shiftZeroCurve  = zeroCouponRateCurve.horizontalShift( tenor );
+		Curve shiftZeroCurve  = zeroCouponRateCurve.horizontalShift( periodToMaturity );
 		
 		AnnualizedPeriod p = new AnnualizedPeriod(paymentPeriod);
 		double eachAnnualizedPeroid = p.getValue(); 
@@ -65,6 +66,14 @@ public class YieldCalculator {
 		
 		double price = new CurvePricer(zeroCouponRateCurve).price(contract);
 		return Math.pow( futureValue / price, 1.0 / annualizedPeriodToMaturity ) - 1;
+	}
+
+	/**
+	 *  only annual compounding frequency at the moment
+	 */
+	public static double zeroCouponRate(double price, ReadablePeriod periodToMaturity) {
+		AnnualizedPeriod p = new AnnualizedPeriod(periodToMaturity);
+		return Math.pow(100/price, 1.0/p.getValue()) - 1;
 	}
 
 }

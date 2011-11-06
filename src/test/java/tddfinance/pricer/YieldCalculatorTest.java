@@ -56,4 +56,11 @@ public class YieldCalculatorTest {
 		//If you re-invest intermidiate cashflows @YTM, YTM = annual rate of return 
 		assertEquals(0.02, YieldCalculator.annualRateOfReturn(bond, zeroCouponRates, Years.years(5), Years.years(1)), 1.0e-6);	
 	}
+	
+	@Test
+	public void zeroCouponRateTest() throws Exception {
+		assertEquals(0.014075, YieldCalculator.zeroCouponRate(98.612, Years.years(1)), 1.0e-6);
+		assertEquals(0.030747, YieldCalculator.zeroCouponRate(94.123, Years.years(2)), 1.0e-6);
+		assertEquals(0.035932, YieldCalculator.zeroCouponRate(89.951, Years.years(3)), 1.0e-6);
+	}
 }
