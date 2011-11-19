@@ -44,4 +44,8 @@ public class CurvePricer implements Pricer {
 		}
 	}
 
+	public static double price(Contract contract, Curve curve) throws Exception {
+		Pricer pricer =  new CurvePricer(curve);
+		return pricer.price(contract);
+	}
 }

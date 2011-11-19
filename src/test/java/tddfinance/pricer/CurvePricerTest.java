@@ -61,4 +61,19 @@ public class CurvePricerTest {
 		
 		assertEquals( 103.8320757, bondPricer.price( bond ), 1.0e-6 );
 	}
+	
+	@Test
+	public void testPriceSensitivity() throws Exception {
+		LocalDate baseDate  = new LocalDate(2001, 4, 1);
+		Bond      bond      = new Bond( Cash.USD, 100, 0.1, baseDate, Years.years(20));
+		double    basePrice = 100;
+		
+		assertEquals( basePrice + 45.879684, CurvePricer.price( bond, new FlatCurve(baseDate, 0.06) ),  1.0e-6 );
+		assertEquals( basePrice + 9.128545,  CurvePricer.price( bond, new FlatCurve(baseDate, 0.09) ),  1.0e-6 );
+		assertEquals( basePrice + 0.857199,  CurvePricer.price( bond, new FlatCurve(baseDate, 0.099) ), 1.0e-6 );
+		assertEquals( basePrice,             CurvePricer.price( bond, new FlatCurve(baseDate, 0.1) ),   1.0e-6 );
+		assertEquals( basePrice - 0.845578,  CurvePricer.price( bond, new FlatCurve(baseDate, 0.101) ), 1.0e-6 );
+		assertEquals( basePrice - 7.963329,  CurvePricer.price( bond, new FlatCurve(baseDate, 0.11) ),  1.0e-6 );
+		assertEquals( basePrice - 26.492523, CurvePricer.price( bond, new FlatCurve(baseDate, 0.14) ),      1.0e-6 );
+	}
 }
