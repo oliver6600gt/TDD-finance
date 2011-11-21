@@ -14,10 +14,14 @@ public class DayCount {
 	private DayCount(){};
 
 	/**
-	 * Day count fraction with arbitrary payment frequency
+	 * Day count fraction with arbitrary payment frequency. <br>
+	 * The base method of this class, which is called by other methods of the same class, so that you'll have common parameter checkers only in this method
 	 */
 	static public double fraction(DayCountConventionInterface convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentSettleDate, int paymentFrequency){
-		return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, paymentFrequency);
+		if( accrualStartDate.equals(accrualEndDate) )
+			return 0;
+		else
+			return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, paymentFrequency);
 	}
 
 	/**
@@ -28,14 +32,14 @@ public class DayCount {
 			throw new IllegalArgumentException( "paymentFrequency = " + paymentFrequency + " is illegal. It should be a divisor of 12" );
 			
 		LocalDate nextPaymentSettleDate = accrualStartDate.plus(Months.months(12/paymentFrequency));
-		return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, paymentFrequency);
+		return DayCount.fraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, paymentFrequency);
 	}
 
 	/**
 	 * Day count fraction with annual payment frequency
 	 */
 	static public double fraction(DayCountConventionInterface convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentSettleDate){
-		return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, 1);
+		return DayCount.fraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, 1);
 	}
 
 
@@ -44,7 +48,7 @@ public class DayCount {
 	 */
 	static public double fraction(DayCountConventionInterface convention, LocalDate accrualStartDate, LocalDate accrualEndDate){
 		LocalDate nextPaymentSettleDate = accrualStartDate.plus(Years.ONE);
-		return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, 1);
+		return DayCount.fraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, 1);
 	}
 
 
