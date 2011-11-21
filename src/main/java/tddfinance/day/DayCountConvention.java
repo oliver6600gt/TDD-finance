@@ -2,7 +2,7 @@ package tddfinance.day;
 
 import org.joda.time.LocalDate;
 
-public interface DayCountConventionInterface {
+public interface DayCountConvention {
 	
 	/*
 	 * Day Count fraction 
