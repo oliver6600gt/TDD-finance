@@ -42,4 +42,20 @@ public class DayCount30360Test {
 		//Feb 29th is 29th, should not be treated as 30th
 		assertEquals( 2.0/360, DayCount.fraction(DayCount.DC_30360, new LocalDate(2000, 2, 29), new LocalDate(2000, 3, 1) ), 1.0e-6 ); 
 	}
+	
+	@Test
+	public void fractionOverOnePeriodTest() throws Exception {
+		
+		//One year, semi-annual = 1/2 x 2 = 1.0
+		assertEquals( 1.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2005, 4, 28),  2 ), 1.0e-6 );
+		
+		//Two years, semi-annual = 1/2 x 4 = 2.0
+		assertEquals( 2.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 4, 28),  2 ), 1.0e-6 );
+		
+		//Two years, quarterly = 1/4 x 8 = 2.0
+		assertEquals( 2.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 4, 28),  4 ), 1.0e-6 );
+		
+		//Two years and a half, quarterly = 1/4 x 9 = 2.5
+		assertEquals( 2.5, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 10, 28), 4 ), 1.0e-6 );
+	}
 }

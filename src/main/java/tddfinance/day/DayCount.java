@@ -17,57 +17,85 @@ public class DayCount {
 	private DayCount(){};
 
 	/**
-	 * Day count fraction with arbitrary payment frequency. <br>
-	 * The base method of this class, which is called by other methods of the same class, so that you'll have common parameter checkers only in this method
+	 * Common internal function called from the static "fraction" methods of this class (with different argument definition).
+	 * <p>
+	 * In case accrualEndDate >= nextPaymentDate, it recursively calculates the fraction. 
+	 * This doesn't happen in a usual accrued interest calculation scenario, however, 
+	 * when you are calculating the annualized period length while (e.g.) discounting cashflows, pricing a long-dated zero coupon, etc, 
+	 * a fraction that is greater than 1.0/compounding frequency will be needed.
 	 */
-	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentSettleDate, int paymentFrequency){
-		if( accrualStartDate.equals(accrualEndDate) )
+	static private double calculateFraction(
+		DayCountConvention convention,
+		LocalDate          accrualStartDate,
+		LocalDate          accrualEndDate,
+		LocalDate          nextPaymentDate,
+		ReadablePeriod     unitPeriodLength,
+		int                compoundingFrequency	
+	){
+		if( accrualStartDate.equals(accrualEndDate) ){
 			return 0;
-		else
-			return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentSettleDate, paymentFrequency);
-	}
-
-	/**
-	 * Day count fraction with arbitrary payment frequency, where paymentFrequency should be a divisor of 12
-	 */
-	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, int paymentFrequency){
-		if( paymentFrequency < 1 || paymentFrequency > 12 || 12 % paymentFrequency != 0)
-			throw new IllegalArgumentException( "paymentFrequency = " + paymentFrequency + " is illegal. It should be a divisor of 12" );
+		}
+		else if( accrualEndDate.isAfter(nextPaymentDate) ){
+			//The accrual spans more than one period -> recursively calculate the day count fraction for accrual
+			LocalDate accrualStartDateNew = nextPaymentDate;
+			LocalDate nextPaymentDateNew  = nextPaymentDate.plus( unitPeriodLength );
 			
-		LocalDate nextPaymentSettleDate = accrualStartDate.plus(Months.months(12/paymentFrequency));
-		return DayCount.fraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, paymentFrequency);
+			return 1.0 / compoundingFrequency + 
+				DayCount.calculateFraction(convention, accrualStartDateNew, accrualEndDate, nextPaymentDateNew, unitPeriodLength, compoundingFrequency);
+		}
+		else
+			return convention.fraction(accrualStartDate, accrualEndDate, nextPaymentDate, compoundingFrequency);			
+	}
+
+	
+	
+	/**
+	 * Day count fraction with arbitrary payment frequency, with nextPaymentDate specified
+	 */
+	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentDate, int compoundingFrequency){
+		ReadablePeriod unitPeriodLength = DayCount.periodFromCompoundingFrequency(compoundingFrequency);
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, unitPeriodLength, compoundingFrequency);
 	}
 
 	/**
-	 * Day count fraction with annual payment frequency
+	 * Day count fraction with arbitrary payment frequency 
 	 */
-	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentSettleDate){
-		return DayCount.fraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, 1);
+	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, int compoundingFrequency){
+		ReadablePeriod unitPeriodLength      = DayCount.periodFromCompoundingFrequency(compoundingFrequency);
+		LocalDate      nextPaymentDate = accrualStartDate.plus( unitPeriodLength );
+
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, unitPeriodLength, compoundingFrequency);
 	}
 
+	/**
+	 * Day count fraction with annual payment frequency, with nextPaymentDate specified
+	 */
+	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentDate){
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, Years.ONE, 1);
+	}
 
 	/**
 	 * Day count fraction with annual payment frequency
 	 */
 	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate){
-		LocalDate nextPaymentSettleDate = accrualStartDate.plus(Years.ONE);
-		return DayCount.fraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, 1);
+		LocalDate nextPaymentDate = accrualStartDate.plus(Years.ONE);
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, Years.ONE, 1);
 	}
 
 	/**
 	 * Return the ReadablePeriod value from the compounding frequency. For the simplicity, anything other than below would be invalid.
 	 * <p>
-	 * Compounding Frequcency = 1   -> Years.ONE //annual compounding <br>
-	 * Compounding Frequcency = 2   -> Months.months(6) //semi-annual <br>
-	 * Compounding Frequcency = 3   -> Months.months(4) <br>
-	 * Compounding Frequcency = 4   -> Months.months(3) //quaterly<br>
-	 * Compounding Frequcency = 6   -> Months.months(2) <br>
-	 * Compounding Frequcency = 12  -> Months.months(1) //monthly<br>
-	 * Compounding Frequcency = 52  -> Weeks.weeks(1) //weekly<br>  
-	 * Compounding Frequcency = 365 -> Days.days(1) //daily<br>:  
+	 * Compounding Frequency = 1   -> Years.ONE //annual compounding <br>
+	 * Compounding Frequency = 2   -> Months.months(6) //semi-annual <br>
+	 * Compounding Frequency = 3   -> Months.months(4) <br>
+	 * Compounding Frequency = 4   -> Months.months(3) //quaterly<br>
+	 * Compounding Frequency = 6   -> Months.months(2) <br>
+	 * Compounding Frequency = 12  -> Months.months(1) //monthly<br>
+	 * Compounding Frequency = 52  -> Weeks.weeks(1) //weekly<br>  
+	 * Compounding Frequency = 365 -> Days.days(1) //daily<br>:  
 	 * <p>
 	 */
-	public static ReadablePeriod getPeriodFromCompoundingFrequency(int compoundingFrequency) {
+	public static ReadablePeriod periodFromCompoundingFrequency(int compoundingFrequency) {
 		if( compoundingFrequency == 1 ) //annual
 			return Years.ONE; 
 		else if( 2 <= compoundingFrequency  && compoundingFrequency <= 12 && 12 % compoundingFrequency == 0) //semi-annual ~ monthly
