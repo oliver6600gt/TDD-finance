@@ -99,7 +99,7 @@ public class Assertion {
 	/**
 	 * Assert the Exception e to have the expected sub string. Typically you can use this as follows:
 	 * <p> 
-	 * try { stuff you expect to throw an exception; failUnexpected(); } <br> 
+	 * try { stuff you expect to throw an exception; failUnexpectedToReachThis(); } <br> 
 	 * catch (Exception e) { assertExceptionMessage( e, "the string you expect inside the exception" ); };
 	 *	
 	 * @param e
