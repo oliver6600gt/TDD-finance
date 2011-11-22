@@ -65,7 +65,7 @@ public class CurvePricerTest {
 	@Test
 	public void testPriceSensitivity() throws Exception {
 		LocalDate baseDate  = new LocalDate(2001, 4, 1);
-		Bond      bond      = new Bond( Cash.USD, 100, 0.1, baseDate, Years.years(20));
+		Bond      bond      = new Bond( Currency.USD, 100, 0.1, baseDate, Years.years(20));
 		double    basePrice = 100;
 		
 		assertEquals( basePrice + 45.879684, CurvePricer.price( bond, new FlatCurve(baseDate, 0.06) ),  1.0e-6 );

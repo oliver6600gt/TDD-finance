@@ -48,26 +48,6 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 	{
 		self = initializeCashflowSet(currency, quantity, couponRate, tenorStartDate, tenor, couponPeriod);
 	}
-	/**
-	 * A set of cashflows with an arbitrary period <br>
-	 * Each cashlow amount = quantity x couponRate x day count factor
-	 * @param cash : cash of the currency
-	 * @param quantity
-	 * @param couponRate 
-	 * @param tenorStartDate : NOT THE FIRST COUPON DATE!, (i.e.) the first coupon date = tenorStartDate + paymentPeriod 
-	 * @param tenor : The length of time between tenorStartDate and maturityDate()
-	 * @param paymentPeriod : Arbitrary payment period, the payment frequency is calculated the inverse of this
-	 */
-	public CashflowSet(
-		Cash           cash,
-		double         quantity, 
-		double         couponRate, 
-		LocalDate      tenorStartDate,
-		ReadablePeriod tenor, 
-		ReadablePeriod couponPeriod ) 
-	{
-		self = initializeCashflowSet(cash.currency(), quantity, couponRate, tenorStartDate, tenor, couponPeriod);
-	}
 
 	/**
 	 * A set of cashflows with an arbitrary maturity date; this accepts a parameter of maturityDate instead of tenor <br>
@@ -91,28 +71,6 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 		self = initializeCashflowSet(currency, quantity, couponRate, tenorStartDate, tenor, couponPeriod);		
 	}
 
-	/**
-	 * A set of cashflows with an arbitrary maturity date; this accepts a parameter of maturityDate instead of tenor <br>
-	 * Each cashlow amount = quantity x couponRate x day count factor
-	 * @param cash : cash of the currency
-	 * @param quantity
-	 * @param couponRate 
-	 * @param tenorStartDate : NOT THE FIRST COUPON DATE!, (i.e.) the first coupon date = tenorStartDate + paymentPeriod 
-	 * @param maturityDate : The maturity date; tenor = maturityDate - tenorStartDate
-	 * @param paymentPeriod : Arbitrary payment period, the payment frequency is calculated the inverse of this
-	 */
-	public CashflowSet(
-		Cash            cash,
-		double          quantity, 
-		double          couponRate, 
-		LocalDate       tenorStartDate,
-		LocalDate       maturityDate, 
-		ReadablePeriod  couponPeriod ) 
-	{
-		ReadablePeriod tenor = AnnualizedPeriod.periodBetweenDays(tenorStartDate, maturityDate);
-		self = initializeCashflowSet(cash.currency(), quantity, couponRate, tenorStartDate, tenor, couponPeriod);		
-	}
-	
 	/**
 	 * A set of annual cashflows with an arbitrary tenor, but the tenor should be multiple of a year as the truncated couponPeriod means its annual coupon<br>
 	 * Each cashlow amount = quantity x couponRate x day count factor
