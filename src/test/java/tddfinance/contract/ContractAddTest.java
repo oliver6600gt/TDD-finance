@@ -111,8 +111,8 @@ public class ContractAddTest {
 		/**
 		 * Case 2
 		 */
-		Contract cfUSD1Yr2Yr3Yr = new CashflowSet(Cash.USD, 100, 0.1, today, Years.years(3)); 
-		Contract cfEUR10Yr12Yr  = new CashflowSet(Cash.EUR, 100, 0.2, today.plusYears(10), Years.years(2));
+		Contract cfUSD1Yr2Yr3Yr = new CashflowSet(Currency.USD, 100, 0.1, today, Years.years(3)); 
+		Contract cfEUR10Yr12Yr  = new CashflowSet(Currency.EUR, 100, 0.2, today.plusYears(10), Years.years(2));
 		Contract twoCashflowSets = new ContractAdd(
 			cfUSD1Yr2Yr3Yr,
 			new ContractGet(tomorrow, cfEUR10Yr12Yr) 

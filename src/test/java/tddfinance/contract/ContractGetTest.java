@@ -36,7 +36,7 @@ public class ContractGetTest {
 	@Test
 	public void factorTest() throws Exception {
 		assertEquals(100, new ContractGet(today, new ContractScale(100, Cash.USD)).scaleFactor(), 1.0e-16);
-		assertEquals(1,   new ContractGet(today, new CashflowSet(Cash.USD, 100, 0.1, today.plusDays(1), Years.years(3))).scaleFactor(), 1.0e-16);
+		assertEquals(1,   new ContractGet(today, new CashflowSet(Currency.USD, 100, 0.1, today.plusDays(1), Years.years(3))).scaleFactor(), 1.0e-16);
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class ContractGetTest {
 		assertEquals( Contract.ZERO, new ContractGet( today, Cash.USD ).nextContract() );
 
 		//underlying contract is non-fungible
-		Contract c = new CashflowSet(Cash.USD, 100, 0.1, today, Years.years(2));
+		Contract c = new CashflowSet(Currency.USD, 100, 0.1, today, Years.years(2));
 		assertEquals(c, new ContractGet(today, c).nextContract());
 	}
 	
@@ -60,7 +60,7 @@ public class ContractGetTest {
 		assertEquals(new PositionEffect(Cash.USD , 1), new ContractGet(today, Cash.USD).nextSpunOffPositions());
 		
 		//underlying congtract is non-fungible
-		Contract c = new CashflowSet(Cash.USD, 100, 0.1, today, Years.years(2));
+		Contract c = new CashflowSet(Currency.USD, 100, 0.1, today, Years.years(2));
 		assertEquals(PositionEffect.ZERO, new ContractGet(today, c).nextSpunOffPositions());
 	}
 

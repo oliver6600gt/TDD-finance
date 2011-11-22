@@ -90,25 +90,6 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 		self = initializeCashflowSet(currency, quantity, couponRate, tenorStartDate, tenor, Years.years(1));
 	}
 
-	/**
-	 * A set of annual cashflows with an arbitrary tenor, but the tenor should be multiple of a year as the truncated couponPeriod means its annual coupon<br>
-	 * Each cashlow amount = quantity x couponRate x day count factor
-	 * @param cash : cash of the currency
-	 * @param quantity
-	 * @param couponRate
-	 * @param tenorStartDate : NOT THE FIRST COUPON DATE!, (i.e.) the first coupon date = tenorStartDate + paymentPeriod 
-	 * @param tenor : The length of time "in years" between tenorStartDate and maturityDate()
-	 */	
-	public CashflowSet(
-		Cash           cash,
-		double         quantity, 
-		double         couponRate, 
-		LocalDate      tenorStartDate,
-		Years          tenor ) 
-	{
-		self = initializeCashflowSet(cash.currency(), quantity, couponRate, tenorStartDate, tenor, Years.years(1));
-	}
-
 	private ContractAdd initializeCashflowSet(
 		Currency       currency,
 		double         quantity, 
