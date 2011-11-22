@@ -4,6 +4,7 @@ import tddfinance.contract.Cashflow;
 import tddfinance.contract.CashflowListInterface;
 import tddfinance.contract.Contract;
 import tddfinance.curve.Curve;
+import tddfinance.day.Compounding;
 import tddfinance.day.DayCount;
 import tddfinance.day.DayCountConvention;
 
@@ -26,7 +27,7 @@ public class CurvePricer implements Pricer {
 			
 			for (Cashflow cashflow : cashflowList.cashflowList()) {
 				double yield  = curve.getValue( cashflow.settlementDate() ); 
-				Pricer pricer = new ZeroCouponPricer(curve.baseDate(), yield, 1, convention);
+				Pricer pricer = new ZeroCouponPricer(curve.baseDate(), yield, Compounding.ANNUAL, convention);
 				price += pricer.price(cashflow);
 			}
 			

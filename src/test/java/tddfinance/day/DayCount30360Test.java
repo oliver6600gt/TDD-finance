@@ -10,7 +10,7 @@ public class DayCount30360Test {
 	@Test
 	public void fractorTest() throws Exception {
 		//1 month = 30 days
-		assertEquals( 1.0/12, DayCount.fraction(DayCount.DC_30360, new LocalDate(2000, 1, 1), new LocalDate(2000, 2, 1), 2 ), 1.0e-6 );  
+		assertEquals( 1.0/12, DayCount.fraction(DayCount.DC_30360, new LocalDate(2000, 1, 1), new LocalDate(2000, 2, 1), Compounding.SEMI_ANNUAL ), 1.0e-6 );  
 		
 		//1 year = 360 days
 		assertEquals( 1.0, DayCount.fraction(DayCount.DC_30360, new LocalDate(2000, 1, 1), new LocalDate(2001, 1, 1) ), 1.0e-6 );  
@@ -47,15 +47,15 @@ public class DayCount30360Test {
 	public void fractionOverOnePeriodTest() throws Exception {
 		
 		//One year, semi-annual = 1/2 x 2 = 1.0
-		assertEquals( 1.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2005, 4, 28),  2 ), 1.0e-6 );
+		assertEquals( 1.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2005, 4, 28), Compounding.SEMI_ANNUAL ), 1.0e-6 );
 		
 		//Two years, semi-annual = 1/2 x 4 = 2.0
-		assertEquals( 2.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 4, 28),  2 ), 1.0e-6 );
+		assertEquals( 2.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 4, 28), Compounding.QUARTERLY ), 1.0e-6 );
 		
 		//Two years, quarterly = 1/4 x 8 = 2.0
-		assertEquals( 2.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 4, 28),  4 ), 1.0e-6 );
+		assertEquals( 2.0, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 4, 28), Compounding.QUARTERLY ), 1.0e-6 );
 		
 		//Two years and a half, quarterly = 1/4 x 9 = 2.5
-		assertEquals( 2.5, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 10, 28), 4 ), 1.0e-6 );
+		assertEquals( 2.5, DayCount.fraction( DayCount.DC_30360, new LocalDate(2004, 4, 28), new LocalDate(2006, 10, 28), Compounding.QUARTERLY ), 1.0e-6 );
 	}
 }

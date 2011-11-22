@@ -5,13 +5,14 @@ import org.joda.time.LocalDate;
 import tddfinance.contract.Cashflow;
 import tddfinance.contract.Contract;
 import tddfinance.contract.ZeroCoupon;
+import tddfinance.day.Compounding;
 import tddfinance.day.DayCount;
 import tddfinance.day.DayCountConvention;
 
 public class ZeroCouponPricer implements Pricer {
 	private final LocalDate          pricingDate;
 	private final double             yield;
-	private final int                compoundingFrequency;
+	private final Compounding        compoundingRule;
 	private final DayCountConvention convention;
 
 	/**
@@ -26,7 +27,7 @@ public class ZeroCouponPricer implements Pricer {
 		Contract           contract, 
 		LocalDate          pricingDate, 
 		double             yield, 
-		int                compoundingFrequency, 
+		Compounding        compoundingRule, 
 		DayCountConvention convention 
 	) throws Exception{
 		
@@ -40,19 +41,19 @@ public class ZeroCouponPricer implements Pricer {
 			throw new Exception( "Contract of class " + contract.getClass().toString() + " cannot be handled by ZeroCouponPricer" );
 			
 		//day count fraction 
-		double t = DayCount.fraction(convention, pricingDate, cashflow.settlementDate(), compoundingFrequency );
+		double t = DayCount.fraction(convention, pricingDate, cashflow.settlementDate(), compoundingRule );
 		return cashflow.quantity() / Math.pow( 1.0 + yield, t );
 	}
 
-	public ZeroCouponPricer(LocalDate pricingDate, double yield, int compoundingFrequency, DayCountConvention convention) {
+	public ZeroCouponPricer(LocalDate pricingDate, double yield, Compounding compoundingRule, DayCountConvention convention) {
 		this.pricingDate = pricingDate;
 		this.yield = yield;
-		this.compoundingFrequency = compoundingFrequency;
+		this.compoundingRule = compoundingRule;
 		this.convention = convention;
 	}
 	
 	public double price(Contract contract) throws Exception {
-		return ZeroCouponPricer.price(contract, pricingDate, yield, compoundingFrequency, convention );
+		return ZeroCouponPricer.price(contract, pricingDate, yield, compoundingRule, convention );
 	}
 
 }
