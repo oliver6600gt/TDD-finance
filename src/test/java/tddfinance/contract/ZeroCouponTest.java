@@ -62,4 +62,9 @@ public class ZeroCouponTest {
 	public void nextContractTest() throws Exception {
 		assertEquals(Contract.ZERO, new ZeroCoupon(today, 100, Currency.USD).nextContract());
 	}
+
+	@Test
+	public void cashflowTest() throws Exception {
+		assertEquals(new Cashflow(today, 100, Currency.USD), new ZeroCoupon(today, 100, Currency.USD).cashflow() );
+	}
 }
