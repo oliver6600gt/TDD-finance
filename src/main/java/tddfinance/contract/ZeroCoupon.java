@@ -42,5 +42,9 @@ public class ZeroCoupon extends AbstractBaseContract implements Contract {
 	public LocalDate settlementDate(){ 
 		return representation().maturityDate();	
 	}
+	
+	public Cashflow cashflow(){
+		return (Cashflow) representation();
+	}
 
 }
