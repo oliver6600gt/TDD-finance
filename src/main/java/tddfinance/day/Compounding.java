@@ -48,5 +48,9 @@ public enum Compounding {
 		return unitPeriodLength;
 	}
 
+	public double fraction() {
+		return 1.0 / frequency();
+	}
+
 
 }

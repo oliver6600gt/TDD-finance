@@ -23,6 +23,18 @@ public class CompoundingTest {
 	}
 
 	@Test
+	public void testFraction() throws Exception{
+		assertEquals( 1.0/1,   Compounding.ANNUAL.fraction(),           1.0e-6 );
+		assertEquals( 1.0/2,   Compounding.SEMI_ANNUAL.fraction(),      1.0e-6 );
+		assertEquals( 1.0/3,   Compounding.EVERY_FOUR_MONTH.fraction(), 1.0e-6 );
+		assertEquals( 1.0/4,   Compounding.QUARTERLY.fraction(),        1.0e-6 );
+		assertEquals( 1.0/6,   Compounding.BI_MONTHLY.fraction(),       1.0e-6 );
+		assertEquals( 1.0/12,  Compounding.MONTHLY.fraction(),          1.0e-6 );
+		assertEquals( 1.0/52,  Compounding.WEEKLY.fraction(),           1.0e-6 );
+		assertEquals( 1.0/365, Compounding.DAILY.fraction(),            1.0e-6 );
+	}
+
+	@Test
 	public void testPeriod() throws Exception{
 		assertEquals( Years.ONE,    Compounding.ANNUAL.period() );
 		assertEquals( Months.SIX,   Compounding.SEMI_ANNUAL.period() );
