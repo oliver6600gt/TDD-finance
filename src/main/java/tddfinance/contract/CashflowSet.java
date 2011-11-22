@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import tddfinance.day.Compounding;
-import tddfinance.numeral.AnnualizedPeriod;
 
 import org.joda.time.LocalDate;
 import org.joda.time.ReadablePeriod;
@@ -30,14 +29,14 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 	}
 	
 	/**
-	 * A set of cashflows with an arbitrary period <br>
+	 * A set of cashflows with arbitrary compounding <br>
 	 * Each cashlow amount = quantity x couponRate x day count factor
 	 * @param currency
 	 * @param quantity
 	 * @param couponRate 
 	 * @param tenorStartDate : NOT THE FIRST COUPON DATE!, (i.e.) the first coupon date = tenorStartDate + paymentPeriod 
 	 * @param tenor : The length of time between tenorStartDate and maturityDate()
-	 * @param paymentPeriod : Arbitrary payment period, the payment frequency is calculated the inverse of this
+	 * @param compoundingRule : determines compounding frequency/unit period
 	 */
 	public CashflowSet(
 		Currency       currency,
@@ -47,11 +46,12 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 		ReadablePeriod tenor, 
 		Compounding    compoundingRule ) 
 	{
-		self = initializeCashflowSet(currency, quantity, couponRate, tenorStartDate, tenor, compoundingRule.period() );
+		self = initializeCashflowSet(currency, quantity, couponRate, tenorStartDate, tenor, compoundingRule );
 	}
 
 	/**
-	 * A set of annual cashflows with an arbitrary tenor, but the tenor should be multiple of a year as the truncated couponPeriod means its annual coupon<br>
+	 * A set of cashflows with annual compounding.
+	 * The tenor should be multiple of a year as the truncated couponPeriod means its annual coupon. <br>
 	 * Each cashlow amount = quantity x couponRate x day count factor
 	 * @param currency
 	 * @param quantity
@@ -66,7 +66,7 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 		LocalDate      tenorStartDate,
 		Years          tenor ) 
 	{
-		self = initializeCashflowSet(currency, quantity, couponRate, tenorStartDate, tenor, Years.years(1));
+		self = initializeCashflowSet(currency, quantity, couponRate, tenorStartDate, tenor, Compounding.ANNUAL);
 	}
 
 	private ContractAdd initializeCashflowSet(
@@ -75,11 +75,12 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 		double         couponRate, 
 		LocalDate      tenorStartDate,
 		ReadablePeriod tenor, 
-		ReadablePeriod couponPeriod )
+		Compounding    compoundingRule)
 	{
-		LocalDate maturityDate    = tenorStartDate.plus(tenor);
-		LocalDate firstCouponDate = tenorStartDate.plus(couponPeriod);
-		double    couponAmount    = couponRate * quantity * new AnnualizedPeriod( couponPeriod ).getValue();
+		ReadablePeriod couponPeriod    = compoundingRule.period();
+		LocalDate      maturityDate    = tenorStartDate.plus(tenor);
+		LocalDate      firstCouponDate = tenorStartDate.plus(couponPeriod);
+		double         couponAmount    = couponRate * quantity * compoundingRule.fraction();
 
 		List<Contract> couponList = new ArrayList<Contract>();
 		LocalDate settlementDate  = firstCouponDate;
