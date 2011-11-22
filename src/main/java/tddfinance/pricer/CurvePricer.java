@@ -1,12 +1,11 @@
 package tddfinance.pricer;
 
-import org.joda.time.LocalDate;
-
 import tddfinance.contract.Cashflow;
 import tddfinance.contract.CashflowListInterface;
 import tddfinance.contract.Contract;
 import tddfinance.curve.Curve;
 import tddfinance.day.DayCount;
+import tddfinance.day.DayCountConvention;
 
 public class CurvePricer implements Pricer {
 
@@ -19,22 +18,16 @@ public class CurvePricer implements Pricer {
 	public double price(Contract contract) throws Exception {
 		
 		if(contract instanceof CashflowListInterface){
-			CashflowListInterface cashflowList  = (CashflowListInterface) contract;
+
+			CashflowListInterface cashflowList = (CashflowListInterface) contract;
+			DayCountConvention    convention   = DayCount.DC_ACTUALACTUAL;
 	
 			double price = 0.0;
-			double annualizedPeriod = 0.0;
-			LocalDate previousPeriodEndDate = curve.baseDate();
 			
 			for (Cashflow cashflow : cashflowList.cashflowList()) {
-				
-				//maybe annualized period should depend on the day count convention of the product? 
-				annualizedPeriod += DayCount.fraction(DayCount.DC_ACTUALACTUAL, previousPeriodEndDate, cashflow.settlementDate(), cashflow.settlementDate());
-				double yield = curve.getValue( cashflow.settlementDate() ); 
-				
-				double discountFactor = 1.0 / Math.pow( 1 + yield, annualizedPeriod ); 
-				price += cashflow.quantity() * discountFactor;
-				
-				previousPeriodEndDate = cashflow.settlementDate();
+				double yield  = curve.getValue( cashflow.settlementDate() ); 
+				Pricer pricer = new ZeroCouponPricer(curve.baseDate(), yield, 1, convention);
+				price += pricer.price(cashflow);
 			}
 			
 			return price;
