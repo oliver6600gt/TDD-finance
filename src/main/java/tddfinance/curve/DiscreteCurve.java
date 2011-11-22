@@ -3,11 +3,11 @@ package tddfinance.curve;
 import java.util.Map;
 import java.util.TreeMap;
 
-import tddfinance.numeral.AnnualizedPeriod;
+import tddfinance.day.Compounding;
+import tddfinance.day.DayCount;
 
 import org.joda.time.LocalDate;
 import org.joda.time.ReadablePeriod;
-import org.joda.time.Years;
 
 public class DiscreteCurve implements Curve {
 	private final LocalDate              baseDate;
@@ -50,8 +50,8 @@ public class DiscreteCurve implements Curve {
 		LocalDate forwardStartDate = baseDate().plus(forwardStartsIn);
 		LocalDate forwardEndDate   = forwardStartDate.plus(forwardPeriodLength);
 
-		double yearsToForwardStartsIn     = new AnnualizedPeriod(forwardStartsIn).getValue();
-		double yearsOfForwardPeriodLength = new AnnualizedPeriod(forwardPeriodLength).getValue();
+		double yearsToForwardStartsIn     = DayCount.fraction( DayCount.DC_30360, baseDate(), forwardStartDate );
+		double yearsOfForwardPeriodLength = DayCount.fraction( DayCount.DC_30360, forwardStartDate, forwardEndDate );
 		double yearsToForwardEndsIn       = yearsToForwardStartsIn + yearsOfForwardPeriodLength;
 	
 		return paymentFrequency * 
@@ -69,11 +69,12 @@ public class DiscreteCurve implements Curve {
 	//FixMe what about multi-annual bond? get some more parameters??
 	public double parYield(ReadablePeriod tenorToMaturity) throws Exception{
 
-		ReadablePeriod couponPeriod            = Years.years(1);//Months.months(12 / couponFrequency);
+		Compounding    compounding             = Compounding.ANNUAL;
+		ReadablePeriod couponPeriod            = compounding.period();//Months.months(12 / couponFrequency);
 		ReadablePeriod periodToFirstCouponDate = couponPeriod;  //temporary assumption for easiness
 		
-		double yearsToFirstCouponDate = new AnnualizedPeriod(periodToFirstCouponDate).getValue();
-		double yearsOfCouponPeriod    = new AnnualizedPeriod(couponPeriod).getValue();
+		double yearsToFirstCouponDate = compounding.fraction();
+		double yearsOfCouponPeriod    = compounding.fraction();
 		
 		LocalDate maturityDate = this.baseDate().plus(tenorToMaturity);
 
@@ -92,7 +93,7 @@ public class DiscreteCurve implements Curve {
 		}
 			
 		//2: Calculate the numerator
-		double yearsToMaturity = new AnnualizedPeriod(tenorToMaturity).getValue();
+		double yearsToMaturity = DayCount.fraction( DayCount.DC_ACTUALACTUAL, baseDate(), baseDate().plus(tenorToMaturity) );
 		double numerator       = 1.0 - 1.0 / Math.pow(1.0 + this.getValue(maturityDate), yearsToMaturity);
 		
 		return numerator / denominator; 
