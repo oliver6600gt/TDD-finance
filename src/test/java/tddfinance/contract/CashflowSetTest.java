@@ -11,6 +11,7 @@ import org.joda.time.Months;
 import org.joda.time.Years;
 import org.junit.Test;
 
+import tddfinance.day.Compounding;
 import tddfinance.trade.PositionEffect;
 
 
@@ -22,11 +23,11 @@ public class CashflowSetTest {
 			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(4) ),
 			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(4) ) );
 		assertEqualsStrict(
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(4) ),
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(4) ) );
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ),
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ) );
 		assertEqualsStrict(
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(3), Months.months(12) ),
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(3), Years.years(1) ) );
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(3) ),
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(3), Compounding.ANNUAL ) );
 	}
 
 	@Test
@@ -35,27 +36,26 @@ public class CashflowSetTest {
 			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(4) ),
 			new CashflowSet( Currency.EUR, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(4) ) );
 		assertInEqualStrict(
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(4) ),
-			new CashflowSet( Currency.USD, 200.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(4) ) );
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ),
+			new CashflowSet( Currency.USD, 200.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ) );
 		assertInEqualStrict(
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(4) ),
-			new CashflowSet( Currency.USD, 100.0, 0.04, new LocalDate(2000,5,6), Years.years(1), Months.months(4) )	);
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ),
+			new CashflowSet( Currency.USD, 100.0, 0.04, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ) );
 		assertInEqualStrict(
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(4) ),
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2001,5,6), Years.years(1), Months.months(4) ) );
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ),
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2001,5,6), Years.years(1), Compounding.QUARTERLY ) );
 		assertInEqualStrict(
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(4) ),
-			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Months.months(6) ) );
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.QUARTERLY ),
+			new CashflowSet( Currency.USD, 100.0, 0.08, new LocalDate(2000,5,6), Years.years(1), Compounding.SEMI_ANNUAL ) );
 	}
 	
 	@Test
 	public void CashFlowListTest() throws Exception {
 		double quantity     = 1000000;
-		Months couponPeriod = Months.months(6);//semi-annualy
 		double couponRate   = 0.08;
 		double couponAmount = quantity * couponRate / 2; //semi-annualy: devided by 2 
 
-		CashflowSet cashflowSet = new CashflowSet( Currency.USD, quantity, couponRate, new LocalDate(2000,5,6), Years.years(4), couponPeriod );
+		CashflowSet cashflowSet = new CashflowSet( Currency.USD, quantity, couponRate, new LocalDate(2000,5,6), Years.years(4), Compounding.SEMI_ANNUAL );
 
 		//tenorStartDate = 2000-5-6, semi-annual => first coupon date = 2000-11-6
 		List<Contract> expectedCashflows = new ArrayList<Contract>();
@@ -75,17 +75,17 @@ public class CashflowSetTest {
 	public void maturityDateTest() throws Exception {
 		assertEquals(
 			new LocalDate(2004,5,6),
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Months.months(6) ).maturityDate());
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Compounding.SEMI_ANNUAL ).maturityDate());
 		assertEquals(
 			new LocalDate(2001,11,6),
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Months.months(18), Months.months(6) ).maturityDate() );
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Months.months(18), Compounding.SEMI_ANNUAL ).maturityDate() );
 	}
 
 	@Test
 	public void nextEventDateTest() throws Exception {
 		assertEquals(
 			new LocalDate(2000,11,6),
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Months.months(6) ).nextEventDate() );
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Compounding.SEMI_ANNUAL ).nextEventDate() );
 
 		assertEquals(
 			new LocalDate(2001,5,6),
@@ -95,20 +95,20 @@ public class CashflowSetTest {
 	@Test
 	public void nextContractTest() throws Exception {
 		assertEquals(
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,11,6), Months.months(3*12 + 6), Months.months(6) ),
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6),  Years.years(4),          Months.months(6) ).nextContract() );
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,11,6), Months.months(3*12 + 6), Compounding.SEMI_ANNUAL ),
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6),  Years.years(4),          Compounding.SEMI_ANNUAL ).nextContract() );
 		assertEquals(
 			Contract.ZERO,
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(1), Years.years(1) ).nextContract() );
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(1), Compounding.ANNUAL ).nextContract() );
 	}
 	
 	@Test
 	public void nextSpunOffPositionsTest() throws Exception {
 		assertEquals(
 			new PositionEffect( Cash.USD, 10 ),
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Months.months(12) ).nextSpunOffPositions() );
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Compounding.ANNUAL).nextSpunOffPositions() );
 		assertEquals(
 			new PositionEffect( Cash.USD, 5 ),
-			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Months.months(6) ).nextSpunOffPositions() );
+			new CashflowSet( Currency.USD, 100, 0.1, new LocalDate(2000,5,6), Years.years(4), Compounding.SEMI_ANNUAL ).nextSpunOffPositions() );
 	}
 }
