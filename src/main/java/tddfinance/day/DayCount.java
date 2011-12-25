@@ -8,7 +8,7 @@ public class DayCount {
 	public  static final DayCountConvention DC_30360US              = new DayCount30360US();
 	public  static final DayCountConvention DC_30E360ICMA           = new DayCount30E360ICMA();
 	public  static final DayCountConvention DC_30E360ISDA           = new DayCount30E360ISDA();
-	public  static final DayCountConvention DC_ACTUALACTUAL         = new DayCountActualActual();
+	public  static final DayCountConvention DC_ACTUAL_ACTUAL        = new DayCountActualActual();
 	public  static final DayCountConvention DC_ACTUAL_ACTUAL_ICMA   = new DayCountActualActualICMA();
 	public  static final DayCountConvention DC_ACTUAL_ACTUAL_ISDA   = new DayCountActualActualISDA();
 	public  static final DayCountConvention DC_ACTUAL360            = new DayCountActual360();
