@@ -4,8 +4,16 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
 public class DayCount {
-	public  static final DayCountConvention DC_30360        = new DayCount30360();
-	public  static final DayCountConvention DC_ACTUALACTUAL = new DayCountActualActual();
+	public  static final DayCountConvention DC_30360                = new DayCount30360();
+	public  static final DayCountConvention DC_30360US              = new DayCount30360US();
+	public  static final DayCountConvention DC_30E360ICMA           = new DayCount30E360ICMA();
+	public  static final DayCountConvention DC_30E360ISDA           = new DayCount30E360ISDA();
+	public  static final DayCountConvention DC_ACTUALACTUAL         = new DayCountActualActual();
+	public  static final DayCountConvention DC_ACTUAL_ACTUAL_ICMA   = new DayCountActualActualICMA();
+	public  static final DayCountConvention DC_ACTUAL_ACTUAL_ISDA   = new DayCountActualActualISDA();
+	public  static final DayCountConvention DC_ACTUAL360            = new DayCountActual360();
+	public  static final DayCountConvention DC_ACTUAL365FIXED       = new DayCountActual365Fixed();
+	public  static final DayCountConvention DC_ACTUAL365L           = new DayCountActual365L();
 
 	/**
 	 * prohibit instantiation of this class, as it's a utility class 
