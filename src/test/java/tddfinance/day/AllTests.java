@@ -23,6 +23,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	HolidayCalendarTest.class })
 public class AllTests {
 	public static void main(String[] args) {
-		JUnitCore.main(AllTests.class.getName());// 3
+		JUnitCore.main(AllTests.class.getName());
 	}
 }
