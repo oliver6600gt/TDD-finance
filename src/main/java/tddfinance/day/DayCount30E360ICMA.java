@@ -17,10 +17,31 @@ public class DayCount30E360ICMA implements DayCountConvention {
 	public double fraction(
 		LocalDate accrualStartDate,
 		LocalDate accrualEndDate, 
-		LocalDate nextPaymentSettleDate,
-		int       paymentFrequency) {
+		LocalDate nextPaymentSettleDate, //nextPaymentSettleDate: this is ignored for this class ( convention )
+		int       paymentFrequency) {    //paymentFrequency:      this is also ignored for this class ( convention )
 			
-		throw new UnsupportedOperationException( "method not implemented" );
+		return DayCount30E360ICMA.numberOfDays(accrualStartDate, accrualEndDate) / 360.0;
 
+	}
+	
+	/**
+	 * Returns the number of days between start and end based on the "30/360 US" day count basis.
+	 * 
+	 * If start == 31st of a month, then it's adjusted to 30th. 
+	 * If end == 31st, then it is adjusted to 30th.  
+	 * 
+	 * @param start : start of the period
+	 * @param end : end of the period
+	 * @return number of days in int
+	 */
+	public static int numberOfDays(LocalDate start, LocalDate end) {
+
+		int startDayOfMonth = start.getDayOfMonth();
+		startDayOfMonth = ( startDayOfMonth == 31 ) ? 30 : startDayOfMonth;
+				
+		int endDayOfMonth = end.getDayOfMonth();
+		endDayOfMonth = ( endDayOfMonth == 31 ) ? 30 : endDayOfMonth;
+
+		return 360*(end.getYear() - start.getYear()) + 30*(end.getMonthOfYear() - start.getMonthOfYear()) + endDayOfMonth - startDayOfMonth;
 	}
 }

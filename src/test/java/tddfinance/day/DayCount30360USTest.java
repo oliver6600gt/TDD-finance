@@ -80,6 +80,9 @@ public class DayCount30360USTest {
 		//Start = Feb 29, End = 30
 		assertEquals( 61,  DayCount30360US.numberOfDays( new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  4, 30 ) ) ); // Passes 31 
 		assertEquals( 121, DayCount30360US.numberOfDays( new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  6, 30 ) ) ); // Passes 30, 31
+		//Start = Feb 29, End = 31                                                                                        
+		assertEquals( 32,  DayCount30360US.numberOfDays( new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  3, 31 ) ) ); 
+		assertEquals( 92,  DayCount30360US.numberOfDays( new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  5, 31 ) ) ); // Passes 30, 31
 		//Start = 30, End = 1 ~ 27
 		assertEquals( 20,  DayCount30360US.numberOfDays( new LocalDate( 2001,  4, 30 ), new LocalDate( 2001,  5, 20 ) ) ); // Next month but doesn't end in month-end  
 		assertEquals( 50,  DayCount30360US.numberOfDays( new LocalDate( 2001,  4, 30 ), new LocalDate( 2001,  6, 20 ) ) ); // Passes 31
@@ -205,6 +208,9 @@ public class DayCount30360USTest {
 		//Start = Feb 29, End = 30                                                                                           
 		assertEquals( 61/360.0,  DayCount.fraction( DayCount.DC_30360US,  new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  4, 30 ) ), 1.0e-6 ); // Passes 31 
 		assertEquals( 121/360.0, DayCount.fraction( DayCount.DC_30360US,  new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  6, 30 ) ), 1.0e-6 ); // Passes 30, 31
+		//Start = Feb 29, End = 31                                                                                        
+		assertEquals( 32/360.0,  DayCount.fraction( DayCount.DC_30360US,  new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  3, 31 ) ), 1.0e-6 ); 
+		assertEquals( 92/360.0,  DayCount.fraction( DayCount.DC_30360US,  new LocalDate( 2000,  2, 29 ), new LocalDate( 2000,  5, 31 ) ), 1.0e-6 ); // Passes 30, 31
 		//Start = 30, End = 1 ~ 27                                                                                         
 		assertEquals( 20/360.0,  DayCount.fraction( DayCount.DC_30360US,  new LocalDate( 2001,  4, 30 ), new LocalDate( 2001,  5, 20 ) ), 1.0e-6 ); // Next month but doesn't end in month-end  
 		assertEquals( 50/360.0,  DayCount.fraction( DayCount.DC_30360US,  new LocalDate( 2001,  4, 30 ), new LocalDate( 2001,  6, 20 ) ), 1.0e-6 ); // Passes 31
