@@ -22,6 +22,10 @@ public class DayCountActualActualISDATest {
 	}
 	
 	@Test
+	public void testNumberOfDaysInNonLeapYear() throws Exception {
+	}
+	
+	@Test
 	public void testKnownAs() throws Exception {
 		assertEquals( Arrays.asList( "Actual/Actual ISDA", "Actual/Actual", "Act/Act", "Actual/365", "Act/365" ), new DayCountActualActualISDA().knownAs() );
 	}
