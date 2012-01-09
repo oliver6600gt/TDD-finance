@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
