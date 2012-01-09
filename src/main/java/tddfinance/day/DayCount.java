@@ -4,7 +4,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
 public class DayCount {
-	public  static final DayCountConvention DC_30360                = new DayCount30360();
 	public  static final DayCountConvention DC_30360US              = new DayCount30360US();
 	public  static final DayCountConvention DC_30E360ICMA           = new DayCount30E360ICMA();
 	public  static final DayCountConvention DC_30E360ISDA           = new DayCount30E360ISDA();

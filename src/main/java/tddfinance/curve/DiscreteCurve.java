@@ -50,8 +50,8 @@ public class DiscreteCurve implements Curve {
 		LocalDate forwardStartDate = baseDate().plus(forwardStartsIn);
 		LocalDate forwardEndDate   = forwardStartDate.plus(forwardPeriodLength);
 
-		double yearsToForwardStartsIn     = DayCount.fraction( DayCount.DC_30360, baseDate(), forwardStartDate );
-		double yearsOfForwardPeriodLength = DayCount.fraction( DayCount.DC_30360, forwardStartDate, forwardEndDate );
+		double yearsToForwardStartsIn     = DayCount.fraction( DayCount.DC_30360US, baseDate(), forwardStartDate );
+		double yearsOfForwardPeriodLength = DayCount.fraction( DayCount.DC_30360US, forwardStartDate, forwardEndDate );
 		double yearsToForwardEndsIn       = yearsToForwardStartsIn + yearsOfForwardPeriodLength;
 	
 		return paymentFrequency * 

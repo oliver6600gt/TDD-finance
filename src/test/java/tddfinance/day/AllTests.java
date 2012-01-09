@@ -9,7 +9,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ 
 	BusinessDayConventionTest.class, 
 	CompoundingTest.class,
-	DayCount30360Test.class, 
 	DayCount30360USTest.class,
 	DayCount30E360ICMATest.class, 
 	DayCount30E360ISDATest.class,
