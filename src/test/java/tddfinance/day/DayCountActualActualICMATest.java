@@ -13,9 +13,18 @@ import org.junit.Test;
  */
 public class DayCountActualActualICMATest {
 
-	@Test(expected = Exception.class)
-	public void test() throws Exception{
-		DayCount.fraction(DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2000, 1, 1), new LocalDate(2000, 2, 1), Compounding.ANNUAL );  
+	@Test
+	public void testFraction() throws Exception{
+		assertEquals( 0.4958904,    DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 7, 10) ), 1.0e-6 ); //The base case; non exactly 0.5
+		assertEquals( 0.4958904,    DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 7, 10), new LocalDate(2002, 1, 10) ), 1.0e-6 ); //The base case + annual compounding; still same
+		assertEquals( 0.4958904,    DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 7, 10), Compounding.ANNUAL ), 1.0e-6 ); //The base case + nextPaymentSettleDate (annual); still same
+		assertEquals( 0.4958904,    DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 7, 10), new LocalDate(2002, 1, 10), Compounding.ANNUAL ), 1.0e-6 ); //The base case + nextPaymentSettleDate + annual compouding; still same
+		assertEquals( 0.4945355,    DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 7, 10), new LocalDate(2002, 1, 11) ), 1.0e-6 ); //One day diff should result in a different value 
+		assertEquals( 0.5,          DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 7, 10), new LocalDate(2001, 7, 10), Compounding.SEMI_ANNUAL ), 1.0e-6 ); //two semi-annual periods make up 1.0; the first half 
+		assertEquals( 0.5,          DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 7, 10), new LocalDate(2002, 1, 10), new LocalDate(2002, 1, 10), Compounding.SEMI_ANNUAL ), 1.0e-6 ); //two semi-annual periods make up 1.0; the second half 
+		assertEquals( 1.0/12,       DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 2, 10), new LocalDate(2001, 2, 10), Compounding.MONTHLY ), 1.0e-6 ); //One month with monthly componding is 1.0/12
+		assertEquals( 31.0/365,     DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 2, 10) ), 1.0e-6 ); //but it's different if it's annual compounding
+		assertEquals( 31.0/(181*2), DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, new LocalDate(2001, 1, 10), new LocalDate(2001, 2, 10), Compounding.SEMI_ANNUAL ), 1.0e-6 ); //also different with semi-annual compounding 
 	}
 	
 	@Test
