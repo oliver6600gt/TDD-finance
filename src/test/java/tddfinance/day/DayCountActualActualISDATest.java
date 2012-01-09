@@ -1,7 +1,6 @@
 package tddfinance.day;
 
 import static org.junit.Assert.*;
-
 import java.util.Arrays;
 
 import org.joda.time.LocalDate;
@@ -132,7 +131,7 @@ public class DayCountActualActualISDATest {
 		assertEquals(           4, DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ISDA, new LocalDate( 2000,  12, 31 ), new LocalDate( 2004,  12,  31 ) ), 1.0e-6 ); //start = end of a leap year, end = end of another leap year
 		assertEquals( 4.273972603, DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ISDA, new LocalDate( 2000,  12, 31 ), new LocalDate( 2005,   4,  10 ) ), 1.0e-6 ); //start = end of a leap year, end = a day after the two leap years
 	}
-	
+
 	@Test
 	public void testKnownAs() throws Exception {
 		assertEquals( Arrays.asList( "Actual/Actual ISDA", "Actual/Actual", "Act/Act", "Actual/365", "Act/365" ), new DayCountActualActualISDA().knownAs() );
