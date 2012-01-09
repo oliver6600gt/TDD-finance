@@ -35,10 +35,7 @@ public class DayCount {
 		LocalDate          nextPaymentDate,
 		Compounding        compoundingRule
 	){
-		if( accrualStartDate.equals(accrualEndDate) ){
-			return 0;
-		}
-		else if( accrualEndDate.isAfter(nextPaymentDate) ){
+		if( accrualEndDate.isAfter(nextPaymentDate) && convention instanceof DayCountActualActual ){
 			//The accrual spans more than one period -> recursively calculate the day count fraction for accrual
 			LocalDate accrualStartDateNew = nextPaymentDate;
 			LocalDate nextPaymentDateNew  = nextPaymentDate.plus( compoundingRule.period() );
