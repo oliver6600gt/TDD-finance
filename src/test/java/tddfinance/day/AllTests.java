@@ -17,7 +17,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	DayCountActual365LTest.class, 
 	DayCountActualActualICMATest.class,
 	DayCountActualActualISDATest.class, 
-	DayCountActualActualTest.class,
 	Days30Test.class, 
 	HolidayCalendarTest.class })
 public class AllTests {

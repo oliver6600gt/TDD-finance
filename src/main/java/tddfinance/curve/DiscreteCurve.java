@@ -93,7 +93,7 @@ public class DiscreteCurve implements Curve {
 		}
 			
 		//2: Calculate the numerator
-		double yearsToMaturity = DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL, baseDate(), baseDate().plus(tenorToMaturity) );
+		double yearsToMaturity = DayCount.fraction( DayCount.DC_ACTUAL_ACTUAL_ICMA, baseDate(), baseDate().plus(tenorToMaturity) );
 		double numerator       = 1.0 - 1.0 / Math.pow(1.0 + this.getValue(maturityDate), yearsToMaturity);
 		
 		return numerator / denominator; 

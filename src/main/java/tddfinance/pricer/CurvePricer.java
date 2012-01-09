@@ -21,7 +21,7 @@ public class CurvePricer implements Pricer {
 		if(contract instanceof CashflowListInterface){
 
 			CashflowListInterface cashflowList = (CashflowListInterface) contract;
-			DayCountConvention    convention   = DayCount.DC_ACTUAL_ACTUAL;
+			DayCountConvention    convention   = DayCount.DC_ACTUAL_ACTUAL_ICMA;
 	
 			double price = 0.0;
 			
