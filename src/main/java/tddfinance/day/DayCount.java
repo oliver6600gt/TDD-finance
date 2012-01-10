@@ -49,34 +49,70 @@ public class DayCount {
 	
 	
 	/**
-	 * Day count fraction with arbitrary payment frequency, with nextPaymentDate specified
+	 * Day count fraction with specified payment frequency and nextPaymentDate specified
+	 * <p>
+	 * Most likely you'll only need to use this for convention = DayCountActualActualICMA (and DayCountActual365L?), 
+	 * as other DayCountConvention implementation classes ignore nextPaymentDate and compoundingRule
+	 * </p>
+	 * @param convention: day count convention class instance
+	 * @param accrualStartDate : start date of the accrual period (exclusive)
+	 * @param accrualEndDate : end date of the accrual period (inclusive)
+	 * @param nextPaymentSettleDate : next payment's settlement date = start date of the next accrual period
+	 * @param compoundingRule : compounding rule to tell you payment frequency
+	 * @return the day count fraction in double
 	 */
-	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentDate, Compounding compoundingRule){
-		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, compoundingRule);
+	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentSettleDate, Compounding compoundingRule){
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, compoundingRule);
 	}
 
 	/**
-	 * Day count fraction with arbitrary payment frequency 
+	 * Day count fraction with specified payment frequency. nextPaymentSettleDate will be figured out from compoundingFrequency.
+	 * <p>
+	 * Most likely you'll only need to use this for convention = DayCountActualActualICMA (and DayCountActual365L?), 
+	 * as other DayCountConvention implementation classes ignore compoundingRule
+	 * </p>
+	 * @param convention: day count convention class instance
+	 * @param accrualStartDate : start date of the accrual period (exclusive)
+	 * @param accrualEndDate : end date of the accrual period (inclusive)
+	 * @param compoundingRule : compounding rule to tell you payment frequency
+	 * @return the day count fraction in double
 	 */
 	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, Compounding compoundingRule){
-		LocalDate nextPaymentDate  = accrualStartDate.plus( compoundingRule.period() );
+		LocalDate nextPaymentSettleDate  = accrualStartDate.plus( compoundingRule.period() );
 		
-		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, compoundingRule);
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, compoundingRule);
 	}
 
 	/**
-	 * Day count fraction with annual payment frequency, with nextPaymentDate specified
+	 * Day count fraction with annual payment frequency, with nextPaymentSettleDate specified
+	 * <p>
+	 * Most likely you'll only need to use this for convention = DayCountActualActualICMA (and DayCountActual365L?), 
+	 * as other DayCountConvention implementation classes ignore nextPaymentSettleDate
+	 * </p>
+	 * @param convention: day count convention class instance
+	 * @param accrualStartDate : start date of the accrual period (exclusive)
+	 * @param accrualEndDate : end date of the accrual period (inclusive)
+	 * @param compoundingRule : compounding rule to tell you payment frequency
+	 * @return the day count fraction in double
 	 */
-	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentDate){
-		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, Compounding.ANNUAL);
+	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextPaymentSettleDate){
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, Compounding.ANNUAL);
 	}
 
 	/**
-	 * Day count fraction with annual payment frequency
+	 * Day count fraction with annual payment frequency, with nextPaymentSettleDate calculated internally
+	 * <p>
+	 * Most of the cases you can use this as it's straightforward for most of the Day Count Convention classes,
+	 * unless you are using DayCountActualActualISMA or DAyCountActual365L which require additional paramenters. 
+	 * </p>
+	 * @param convention: day count convention class instance
+	 * @param accrualStartDate : start date of the accrual period (exclusive)
+	 * @param accrualEndDate : end date of the accrual period (inclusive)
+	 * @return the day count fraction in double
 	 */
 	static public double fraction(DayCountConvention convention, LocalDate accrualStartDate, LocalDate accrualEndDate){
-		LocalDate nextPaymentDate = accrualStartDate.plus(Years.ONE);
-		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentDate, Compounding.ANNUAL);
+		LocalDate nextPaymentSettleDate = accrualStartDate.plus(Years.ONE);
+		return DayCount.calculateFraction(convention, accrualStartDate, accrualEndDate, nextPaymentSettleDate, Compounding.ANNUAL);
 	}
 
 }

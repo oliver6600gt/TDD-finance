@@ -15,6 +15,13 @@ public class DayCountActualActualISDA implements DayCountConvention {
 		return new ArrayList<String>( DayCountActualActualISDA.knownAs );
 	}
 	
+
+	/**
+	 *   Factor = DaysInLeapYear/366 + DaysInNonLeapYear/365
+	 *   <p> 
+	 *   nextPaymentSettleDate and paymentFrequency are ignored
+	 *   </p>
+	 */
 	public double fraction(
 		LocalDate accrualStartDate,
 		LocalDate accrualEndDate, 
@@ -28,8 +35,8 @@ public class DayCountActualActualISDA implements DayCountConvention {
 	/**
 	 * Returns the actual number of days in non-leap years between start and end 
 	 * 
-	 * @param start : start of the period
-	 * @param end : end of the period
+	 * @param start : start of the period (exclusive)
+	 * @param end : end of the period (inclusive)
 	 * @return number of days in int
 	 */
 	public static int numberOfDaysInNonLeapYear(LocalDate start, LocalDate end) {
@@ -39,8 +46,8 @@ public class DayCountActualActualISDA implements DayCountConvention {
 	/**
 	 * Returns the actual number of days in leap years between start and end 
 	 * 
-	 * @param start : start of the period
-	 * @param end : end of the period
+	 * @param start : start of the period (exclusive)
+	 * @param end : end of the period (inclusive)
 	 * @return number of days in int
 	 */
 	public static int numberOfDaysInLeapYear(LocalDate start, LocalDate end) {

@@ -14,6 +14,15 @@ public class DayCount30E360ICMA implements DayCountConvention {
 		return new ArrayList<String>( DayCount30E360ICMA.knownAs );
 	}
 
+	/**
+	 *   Factor = {360 x (Y2 - Y1) + 30 x (M2 - M1) + (D2 - D1) } / 360
+	 *   <p> 
+	 *   nextPaymentSettleDate and paymentFrequency are ignored
+	 *   </p>
+	 *   <p> 
+	 *   Also, it does adjustment to accrualStart/EndDate as defined in the static numberOfDays method
+	 *   </p>
+	 */
 	public double fraction(
 		LocalDate accrualStartDate,
 		LocalDate accrualEndDate, 
@@ -21,7 +30,6 @@ public class DayCount30E360ICMA implements DayCountConvention {
 		int       paymentFrequency) {    //paymentFrequency:      this is also ignored for this class ( convention )
 			
 		return DayCount30E360ICMA.numberOfDays(accrualStartDate, accrualEndDate) / 360.0;
-
 	}
 	
 	/**

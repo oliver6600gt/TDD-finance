@@ -16,12 +16,7 @@ public class DayCountActualActualICMA implements DayCountConvention {
 	}
 
 	/**
-	 * 
-	 * @param accrualStartDate: the start date of the accrual perid (exclusive)
-	 * @param accrualEndDate: the end date of the accrual period (inclusive), and cannot be after nextPaymentSettleDate
-	 * @param nextPaymentSettleDate: the next payment settlement date (i.e. the start of next accrual period). It cannot be before accrualEndDate. 
-	 * @param paymentFrequency: payment frequency in int
-	 * @return
+	 *  Factror = DaysBetween( accrualStartDate, accrualEndDate ) / { paymentFreqyency x DaysBetween(accrualStartDate, nextPaymentSettleDate) }
 	 */
 	public double fraction(
 		LocalDate accrualStartDate,

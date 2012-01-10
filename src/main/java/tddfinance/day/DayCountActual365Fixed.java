@@ -15,6 +15,12 @@ public class DayCountActual365Fixed implements DayCountConvention {
 		return new ArrayList<String>( DayCountActual365Fixed.knownAs );
 	}
 	
+	/**
+	 *   Factor = DaysBetween(accrualStartDate, accrualEndDate)/365
+	 *   <p> 
+	 *   nextPaymentSettleDate and paymentFrequency are ignored
+	 *   </p>
+	 */
 	public double fraction(
 		LocalDate accrualStartDate,
 		LocalDate accrualEndDate, 

@@ -14,6 +14,15 @@ public class DayCount30360US implements DayCountConvention {
 		return new ArrayList<String>( DayCount30360US.knownAs );
 	}
 
+	/**
+	 *   Factor = {360 x (Y2 - Y1) + 30 x (M2 - M1) + (D2 - D1) } / 360
+	 *   <p> 
+	 *   nextPaymentSettleDate and paymentFrequency are ignored
+	 *   </p>
+	 *   <p> 
+	 *   Also, it does adjustment to accrualStart/EndDate as defined in the static numberOfDays method
+	 *   </p>
+	 */
 	public double fraction(
 		LocalDate accrualStartDate,
 		LocalDate accrualEndDate, 

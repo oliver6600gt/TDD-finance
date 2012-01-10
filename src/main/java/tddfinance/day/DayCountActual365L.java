@@ -13,6 +13,7 @@ public class DayCountActual365L implements DayCountConvention {
 	public List<String> knownAs() {
 		return new ArrayList<String>( DayCountActual365L.knownAs );
 	}
+	
 	public double fraction(
 		LocalDate accrualStartDate,
 		LocalDate accrualEndDate, 
