@@ -11,10 +11,10 @@ import org.joda.time.LocalDate;
  */
 
 public final class BDC {
-	public  static final BusinessDayConventionInterface FOLLOWING          = new BusinessDayConventionFollowing();
-	public  static final BusinessDayConventionInterface MODIFIED_FOLLOWING = new BusinessDayConventionModifiedFollowing();
-	public  static final BusinessDayConventionInterface UNADJUSTED         = new BusinessDayConventionUnadjusted();
-	public  static final BusinessDayConventionInterface PREVIOUS           = new BusinessDayConventionPrevious();
+	public  static final BusinessDayConvention FOLLOWING          = new BusinessDayConventionFollowing();
+	public  static final BusinessDayConvention MODIFIED_FOLLOWING = new BusinessDayConventionModifiedFollowing();
+	public  static final BusinessDayConvention UNADJUSTED         = new BusinessDayConventionUnadjusted();
+	public  static final BusinessDayConvention PREVIOUS           = new BusinessDayConventionPrevious();
 	private static final HolidayCalendar defaultCalender                   = new HolidayCalendar();            
 
 	/**
@@ -25,14 +25,14 @@ public final class BDC {
 	/**
  	 * Return the adjusted date depending on the convention (= Business Day Convention) using the default HolidayCalendar
 	 */
-	static LocalDate adjust(LocalDate date, BusinessDayConventionInterface convention){
+	static LocalDate adjust(LocalDate date, BusinessDayConvention convention){
 		return convention.adjust(date, defaultCalender);
 	}
 
 	/**
 	 * Adjust the date depending on the convention (= Business Day Convention) and the calendar(Holiday Caleanar)
 	 */
-	static LocalDate adjust(LocalDate date, BusinessDayConventionInterface convention, HolidayCalendar calendar){
+	static LocalDate adjust(LocalDate date, BusinessDayConvention convention, HolidayCalendar calendar){
 		return convention.adjust(date, calendar);
 	}
 }
