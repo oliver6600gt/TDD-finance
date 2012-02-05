@@ -27,8 +27,7 @@ public class CurvePricer {
 		double price = 0.0;
 		for (Cashflow cashflow : cashflowList.cashflowList()) {
 			double yield  = zeroCouponCurve.getValue( cashflow.settlementDate() ); 
-			ZeroCouponPricer pricer = new ZeroCouponPricer(zeroCouponCurve.baseDate(), yield, compounding, convention);
-			price += pricer.price(cashflow);
+			price += ZeroCouponPricer.price(cashflow, zeroCouponCurve.baseDate(), yield, convention, compounding );
 		}
 
 		return price;
