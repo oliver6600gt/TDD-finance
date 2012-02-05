@@ -1,4 +1,4 @@
-package tddfinance.pricer;
+package tddfinance.calculator;
 
 import tddfinance.contract.Contract;
 

@@ -1,4 +1,4 @@
-package tddfinance.pricer;
+package tddfinance.calculator;
 
 //import static org.junit.Assert.*;
 //

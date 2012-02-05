@@ -1,4 +1,4 @@
-package tddfinance.pricer;
+package tddfinance.calculator;
 
 //import java.util.List;
 //import java.util.ListIterator;

@@ -1,10 +1,11 @@
-package tddfinance.pricer;
+package tddfinance.calculator;
 
 import static org.junit.Assert.*;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import tddfinance.calculator.ZeroCouponPricer;
 import tddfinance.contract.Contract;
 import tddfinance.contract.Currency;
 import tddfinance.contract.ZeroCoupon;

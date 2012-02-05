@@ -1,4 +1,4 @@
-package tddfinance.pricer;
+package tddfinance.calculator;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;

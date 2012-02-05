@@ -1,4 +1,4 @@
-package tddfinance.pricer;
+package tddfinance.calculator;
 
 import static org.junit.Assert.*;
 
@@ -9,12 +9,13 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.junit.Test;
 
+import tddfinance.calculator.CurvePricer;
+import tddfinance.calculator.Pricer;
 import tddfinance.contract.Bond;
 import tddfinance.contract.Cash;
 import tddfinance.contract.Currency;
 import tddfinance.curve.DiscreteCurve;
 import tddfinance.curve.FlatCurve;
-import tddfinance.pricer.CurvePricer;
 
 public class CurvePricerTest {
 
