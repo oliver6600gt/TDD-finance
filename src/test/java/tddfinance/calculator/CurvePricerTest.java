@@ -10,7 +10,6 @@ import org.joda.time.Years;
 import org.junit.Test;
 
 import tddfinance.calculator.CurvePricer;
-import tddfinance.calculator.Pricer;
 import tddfinance.contract.Bond;
 import tddfinance.contract.Cash;
 import tddfinance.contract.Currency;
@@ -20,23 +19,9 @@ import tddfinance.curve.FlatCurve;
 public class CurvePricerTest {
 
 	@Test
-	public void priceTest() throws Exception {
-		Bond   bond       = new Bond( Currency.USD, 100.0, 0.5, new LocalDate(2000, 4, 1), Years.years(4) );
-		
-		Pricer bondPricerYTM3 = new CurvePricer( new FlatCurve(new LocalDate(2000, 4, 1), 0.3) );
-		Pricer bondPricerYTM4 = new CurvePricer( new FlatCurve(new LocalDate(2000, 4, 1), 0.4) );
-		Pricer bondPricerYTMSameAsCouponRate = new CurvePricer( new FlatCurve(new LocalDate(2000, 4, 1), 0.5) );
-
-		assertEquals( 143.3248136, bondPricerYTM3.price( bond ), 1.0e-6 );
-		assertEquals( 118.4922948, bondPricerYTM4.price( bond ), 1.0e-6 );
-		assertEquals( 100.0, bondPricerYTMSameAsCouponRate.price( bond ), 1.0e-6 ); //if YTM = Coupon, then price = 100
-	}
-
-	@Test
 	public void priceInvalidContractTypeTest() {
 		try {
-			Pricer pricer = new CurvePricer( new FlatCurve(new LocalDate(2000, 4, 1), 0.1) );
-			pricer.price(Cash.USD);
+			CurvePricer.price( Cash.USD, new FlatCurve(new LocalDate(2000, 4, 1), 0.1) );
 			fail( "This line should not be reached as the above line has to throw an exception" );
 		} catch (Exception e) {
 			String expectedExceptionSubString = "Contract of class " + Cash.class.toString() + " cannot be handled by CurvePricer";
@@ -46,6 +31,14 @@ public class CurvePricerTest {
 		}
 	}
 	
+	@Test
+	public void priceTest() throws Exception {
+		Bond bond = new Bond( Currency.USD, 100.0, 0.5, new LocalDate(2000, 4, 1), Years.years(4) );
+		assertEquals( 143.3248136, CurvePricer.price( bond, new FlatCurve(new LocalDate(2000, 4, 1), 0.3) ), 1.0e-6 );
+		assertEquals( 118.4922948, CurvePricer.price( bond, new FlatCurve(new LocalDate(2000, 4, 1), 0.4) ), 1.0e-6 );
+		assertEquals( 100.0,       CurvePricer.price( bond, new FlatCurve(new LocalDate(2000, 4, 1), 0.5) ), 1.0e-6 ); //if YTM = Coupon, then price = 100
+	}
+
 	@Test
 	public void DiscreteCurveTest() throws Exception {
 		LocalDate baseDate = new LocalDate(2001, 4, 1);
@@ -58,9 +51,7 @@ public class CurvePricerTest {
 		curveValues.put(baseDate.plusYears(4), 0.0380);
 		curveValues.put(baseDate.plusYears(5), 0.042);
 		
-		Pricer bondPricer = new CurvePricer( new DiscreteCurve(baseDate, curveValues) );
-		
-		assertEquals( 103.8320757, bondPricer.price( bond ), 1.0e-6 );
+		assertEquals( 103.8320757, CurvePricer.price( bond, new DiscreteCurve(baseDate, curveValues) ), 1.0e-6 );
 	}
 	
 	@Test
@@ -75,6 +66,6 @@ public class CurvePricerTest {
 		assertEquals( basePrice,             CurvePricer.price( bond, new FlatCurve(baseDate, 0.1) ),   1.0e-6 );
 		assertEquals( basePrice - 0.845578,  CurvePricer.price( bond, new FlatCurve(baseDate, 0.101) ), 1.0e-6 );
 		assertEquals( basePrice - 7.963329,  CurvePricer.price( bond, new FlatCurve(baseDate, 0.11) ),  1.0e-6 );
-		assertEquals( basePrice - 26.492523, CurvePricer.price( bond, new FlatCurve(baseDate, 0.14) ),      1.0e-6 );
+		assertEquals( basePrice - 26.492523, CurvePricer.price( bond, new FlatCurve(baseDate, 0.14) ),  1.0e-6 );
 	}
 }

@@ -9,7 +9,7 @@ import tddfinance.day.Compounding;
 import tddfinance.day.DayCount;
 import tddfinance.day.DayCountConvention;
 
-public class ZeroCouponPricer implements Pricer {
+public class ZeroCouponPricer {
 	private final LocalDate          pricingDate;
 	private final double             yield;
 	private final Compounding        compoundingRule;
