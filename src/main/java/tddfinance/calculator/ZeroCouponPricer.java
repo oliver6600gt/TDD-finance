@@ -29,8 +29,10 @@ public class ZeroCouponPricer {
 		Compounding        compoundingRule ){
 		
 		//day count fraction 
-		double t = DayCount.fraction( convention, pricingDate, contract.settlementDate(), compoundingRule );
-		return contract.quantity() / Math.pow( 1.0 + zeriCouponRate, t );
+		double t    = DayCount.fraction( convention, pricingDate, contract.settlementDate(), compoundingRule );
+		int    freq = compoundingRule.frequency();
+		
+		return contract.quantity() / Math.pow( 1.0 + zeriCouponRate / freq, t * freq );
 	}
 	
 	/**
@@ -52,7 +54,9 @@ public class ZeroCouponPricer {
 			Compounding        compoundingRule ){
 			
 		//day count fraction 
-		double t = DayCount.fraction( convention, pricingDate, contract.settlementDate(), compoundingRule );
-		return contract.quantity() / Math.pow( 1.0 + zeriCouponRate, t );
+		double t    = DayCount.fraction( convention, pricingDate, contract.settlementDate(), compoundingRule );
+		int    freq = compoundingRule.frequency();
+		
+		return contract.quantity() / Math.pow( 1.0 + zeriCouponRate / freq, t * freq );
 	}
 }
