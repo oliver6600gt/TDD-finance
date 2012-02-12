@@ -58,4 +58,18 @@ public class CompoundingTest {
 		assertEquals( "Daily Compounding",            Compounding.DAILY.toString() );
 	}
 
+	@Test
+	public void testReturnInPeriod() throws Exception{
+		assertEquals( 1.05,         Compounding.ANNUAL.returnInPeriod( 0.05, 1.0 ),           1.0e-10 );
+		assertEquals( 1.0246950766, Compounding.ANNUAL.returnInPeriod( 0.05, 0.5 ),           1.0e-10 );
+		assertEquals( 1.050625,     Compounding.SEMI_ANNUAL.returnInPeriod( 0.05, 1.0 ),      1.0e-10 );
+		assertEquals( 1.061208,     Compounding.EVERY_FOUR_MONTH.returnInPeriod( 0.06, 1.0 ), 1.0e-10 );
+		assertEquals( 1.0509453369, Compounding.QUARTERLY.returnInPeriod( 0.05, 1.0 ),        1.0e-10 );
+		assertEquals( 1.1044861012, Compounding.QUARTERLY.returnInPeriod( 0.05, 2.0 ),        1.0e-10 );
+		assertEquals( 1.0615201506, Compounding.BI_MONTHLY.returnInPeriod( 0.06, 1.0 ),       1.0e-10 );
+		assertEquals( 1.1268250301, Compounding.MONTHLY.returnInPeriod( 0.12, 1.0 ),          1.0e-10 );
+		assertEquals( 1.6776889214, Compounding.WEEKLY.returnInPeriod( 0.52, 1.0 ),           1.0e-10 );
+		assertEquals( 1.4402513134, Compounding.DAILY.returnInPeriod( 0.365, 1.0 ),           1.0e-10 );
+	}
+
 }
