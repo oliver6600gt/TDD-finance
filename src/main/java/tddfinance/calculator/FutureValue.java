@@ -25,7 +25,6 @@ public class FutureValue {
 		Compounding        compounding) {
 		
 		double t    = DayCount.fraction( convention, pricingDate, cashflow.settlementDate(), compounding );
-		int    freq = compounding.frequency();
-		return cashflow.quantity() * Math.pow( 1.0 + yield / freq, t * freq );
+		return cashflow.quantity() * compounding.returnInPeriod( yield, t );
 	}
 }

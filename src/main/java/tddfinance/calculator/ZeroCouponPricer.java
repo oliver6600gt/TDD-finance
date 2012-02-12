@@ -15,7 +15,7 @@ public class ZeroCouponPricer {
 	 * 
 	 * @param contract - zero coupon contract
 	 * @param pricingDate - the date you are pricing the contract on
-	 * @param zeriCouponRate - (implied) zero coupon rate on the settlement date of the redemption
+	 * @param zeroCouponRate - (implied) zero coupon rate on the settlement date of the redemption
 	 * @param convention
 	 * @param compoundingRule   
 	 * @return
@@ -24,15 +24,13 @@ public class ZeroCouponPricer {
 	public static double price( 
 		ZeroCoupon         contract, 
 		LocalDate          pricingDate, 
-		double             zeriCouponRate, 
+		double             zeroCouponRate, 
 		DayCountConvention convention,
 		Compounding        compoundingRule ){
 		
 		//day count fraction 
-		double t    = DayCount.fraction( convention, pricingDate, contract.settlementDate(), compoundingRule );
-		int    freq = compoundingRule.frequency();
-		
-		return contract.quantity() / Math.pow( 1.0 + zeriCouponRate / freq, t * freq );
+		double t = DayCount.fraction( convention, pricingDate, contract.settlementDate(), compoundingRule );
+		return contract.quantity() / compoundingRule.returnInPeriod( zeroCouponRate, t );
 	}
 	
 	/**
@@ -49,14 +47,12 @@ public class ZeroCouponPricer {
 	public static double price( 
 			Cashflow           contract, 
 			LocalDate          pricingDate, 
-			double             zeriCouponRate, 
+			double             zeroCouponRate, 
 			DayCountConvention convention,
 			Compounding        compoundingRule ){
 			
 		//day count fraction 
 		double t    = DayCount.fraction( convention, pricingDate, contract.settlementDate(), compoundingRule );
-		int    freq = compoundingRule.frequency();
-		
-		return contract.quantity() / Math.pow( 1.0 + zeriCouponRate / freq, t * freq );
+		return contract.quantity() / compoundingRule.returnInPeriod( zeroCouponRate, t );
 	}
 }
