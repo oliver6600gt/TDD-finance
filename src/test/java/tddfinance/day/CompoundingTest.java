@@ -6,10 +6,16 @@ import org.joda.time.Days;
 import org.joda.time.Months;
 import org.joda.time.Weeks;
 import org.joda.time.Years;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.matchers.JUnitMatchers;
+import org.junit.rules.ExpectedException;
 
 public class CompoundingTest {
 
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
+	
 	@Test
 	public void testFrequency() throws Exception{
 		assertEquals( 1,   Compounding.ANNUAL.frequency() );
@@ -20,6 +26,13 @@ public class CompoundingTest {
 		assertEquals( 12,  Compounding.MONTHLY.frequency() );
 		assertEquals( 52,  Compounding.WEEKLY.frequency() );
 		assertEquals( 365, Compounding.DAILY.frequency() );
+	}
+
+	@Test
+	public void testContinuousFrequency() throws Exception {
+		expectedException.expect(UnsupportedOperationException.class);
+		expectedException.expectMessage(JUnitMatchers.containsString("does not support the frequency() method"));
+		Compounding.CONTINUOUS.frequency();
 	}
 
 	@Test
@@ -35,6 +48,13 @@ public class CompoundingTest {
 	}
 
 	@Test
+	public void testContinuousFraction() throws Exception {
+		expectedException.expect(UnsupportedOperationException.class);
+		expectedException.expectMessage(JUnitMatchers.containsString("does not support the fraction() method"));
+		Compounding.CONTINUOUS.fraction();
+	}
+
+	@Test
 	public void testPeriod() throws Exception{
 		assertEquals( Years.ONE,    Compounding.ANNUAL.period() );
 		assertEquals( Months.SIX,   Compounding.SEMI_ANNUAL.period() );
@@ -47,6 +67,13 @@ public class CompoundingTest {
 	}
 
 	@Test
+	public void testContinuousPeriod() throws Exception {
+		expectedException.expect(UnsupportedOperationException.class);
+		expectedException.expectMessage(JUnitMatchers.containsString("does not support the period() method"));
+		Compounding.CONTINUOUS.period();
+	}
+
+	@Test
 	public void testToString() throws Exception{
 		assertEquals( "Annual Compounding",           Compounding.ANNUAL.toString() );
 		assertEquals( "Semi-Annual Compounding",      Compounding.SEMI_ANNUAL.toString() );
@@ -56,6 +83,7 @@ public class CompoundingTest {
 		assertEquals( "Monthly Compounding",          Compounding.MONTHLY.toString() );
 		assertEquals( "Weekly Compounding",           Compounding.WEEKLY.toString() );
 		assertEquals( "Daily Compounding",            Compounding.DAILY.toString() );
+		assertEquals( "Continuous Compounding",       Compounding.CONTINUOUS.toString() );
 	}
 
 	@Test
@@ -70,6 +98,43 @@ public class CompoundingTest {
 		assertEquals( 1.1268250301, Compounding.MONTHLY.returnInPeriod( 0.12, 1.0 ),          1.0e-10 );
 		assertEquals( 1.6776889214, Compounding.WEEKLY.returnInPeriod( 0.52, 1.0 ),           1.0e-10 );
 		assertEquals( 1.4402513134, Compounding.DAILY.returnInPeriod( 0.365, 1.0 ),           1.0e-10 );
+		assertEquals( 2.7182818285, Compounding.CONTINUOUS.returnInPeriod( 0.1, 10.0 ),       1.0e-10 );
 	}
+	
+//	@Test
+//	public void compareExpAndExpM1() throws Exception {
+//      //All those gave me almost same values... probably the native func for exp() was improved??
+//		//So I guess no need to use expm1
+//		System.out.println( Math.exp(1.0) );
+//		System.out.println( Math.expm1(1.0) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.1) );
+//		System.out.println( Math.expm1(0.1) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.01) );
+//		System.out.println( Math.expm1(0.01) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.001) );
+//		System.out.println( Math.expm1(0.001) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.0001) );
+//		System.out.println( Math.expm1(0.0001) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.00001) );
+//		System.out.println( Math.expm1(0.00001) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.000001) );
+//		System.out.println( Math.expm1(0.000001) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.0000001) );
+//		System.out.println( Math.expm1(0.0000001) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.00000001) );
+//		System.out.println( Math.expm1(0.00000001) + 1 );
+//		System.out.println();
+//		System.out.println( Math.exp(0.000000001) );
+//		System.out.println( Math.expm1(0.000000001) + 1 );
+//		System.out.println();
+//	}
 
 }

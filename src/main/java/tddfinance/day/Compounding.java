@@ -7,15 +7,15 @@ import org.joda.time.Weeks;
 import org.joda.time.Years;
 
 /**
- * An enumeration class for clearer compounding representation, 
- * instead of using 1) int as compounding frequency, and 2) ReadablePeriod as unit compounding period length, 
+ * An enumeration class for compounding representation.
+ * For almost any method implementation, you are encouraged to use this, instead of relying on 1) an int value as a compounding frequency or 2) ReadablePeriod as unit compounding period length. 
  * 
- * <p>
- * Benefits:<br>
- * A) No need to create the same method with to diff argument sets - with int (frequency) and ReadablePeriod (unit period) <br>
- * B) You can only use the set of valid values<br>
- * <br>
  */
+//----------------------------------------------------------------------------------------------------------------------//
+// Most methods in this class use "if( this.equals( Compounding.CONTINUOUS ) )" branch, which is not pretty.
+// However, given that only the continuous compounding needs a special handling, it would be okay.
+// A cleaner approach is to introduce complete "Strategy" design pattern somehow, but it wouldn't worth it for now
+//----------------------------------------------------------------------------------------------------------------------//
 public enum Compounding {
 	ANNUAL             (1,    Years.ONE,    "Annual Compounding"),
 	SEMI_ANNUAL        (2,    Months.SIX,   "Semi-Annual Compounding"),
@@ -24,7 +24,8 @@ public enum Compounding {
 	BI_MONTHLY         (6,    Months.TWO,   "Bi-Monthly Compounding"),
 	MONTHLY            (12,   Months.ONE,   "Monthly Compounding"),
 	WEEKLY             (52,   Weeks.ONE,    "Weekly Compounding"),
-	DAILY              (365,  Days.ONE,     "Daily Compounding");
+	DAILY              (365,  Days.ONE,     "Daily Compounding"),
+	CONTINUOUS         (0,    null,         "Continuous Compounding"); //0 and null are dummy values, as frequency() and period() should thrown exceptions 
 	
 	private final String         description;
 	private final int            compoundingFrequency;
@@ -41,15 +42,27 @@ public enum Compounding {
 	}
 
 	public int frequency(){
-		return compoundingFrequency;
+		if( this.equals( Compounding.CONTINUOUS ) ) //theoretically, it is infinite frequency 
+			throw new UnsupportedOperationException( "Compounding.CONTINUOUS does not support the frequency() method" );
+		else
+			return compoundingFrequency;
 	}
 	
 	public ReadablePeriod period(){
-		return unitPeriodLength;
+		if( this.equals( Compounding.CONTINUOUS ) ) //theoretically, its period length is 0
+			throw new UnsupportedOperationException( "Compounding.CONTINUOUS does not support the period() method" );
+		else
+			return unitPeriodLength;
 	}
 
+	/**
+	 * @return number of annual payments ( more precisely, the inverse of frequency() ) 
+	 */
 	public double fraction() {
-		return 1.0 / frequency();
+		if( this.equals( Compounding.CONTINUOUS ) ) //theoretically, it is infinite fraction
+			throw new UnsupportedOperationException( "Compounding.CONTINUOUS does not support the fraction() method" );
+		else
+			return 1.0 / frequency();
 	}
 
 	/**
@@ -60,8 +73,9 @@ public enum Compounding {
 	 *   
 	 */
 	public double returnInPeriod(double rate, double annualizedPeriod) {
-		return Math.pow( 1.0 + rate/frequency(), annualizedPeriod*frequency() );
+		if( this.equals( Compounding.CONTINUOUS ) ) //theoretically, it is infinite fraction
+			return Math.exp( rate * annualizedPeriod );
+		else
+			return Math.pow( 1.0 + rate/frequency(), annualizedPeriod*frequency() );
 	}
-
-
 }
