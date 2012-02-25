@@ -16,18 +16,17 @@ public class CashflowTest {
 	@Test
 	public void equalityTest() throws Exception {
 		LocalDate settlementDate = today;
-		assertEqualsStrict( new Cashflow(settlementDate, 100, Cash.USD), new Cashflow(settlementDate, 100, Cash.USD) );	
-		assertEqualsStrict( new Cashflow(settlementDate, 100, Cash.USD), new Cashflow(settlementDate, 100, Currency.USD) );	
-		assertEqualsStrict( new Cashflow(settlementDate.plus(Years.years(1)), 100, Cash.USD), new Cashflow(settlementDate.plus(Years.years(1)), 100, Cash.USD) );
+		assertEqualsStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100, Currency.USD) );	
+		assertEqualsStrict( new Cashflow(settlementDate.plus(Years.years(1)), 100, Currency.USD), new Cashflow(settlementDate.plus(Years.years(1)), 100, Currency.USD) );
 	}
 
 	@Test
 	public void InequalityTest() throws Exception {
 		LocalDate settlementDate = today;
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Cash.USD), new Cashflow(settlementDate.plus(Days.days(1)), 100, Cash.USD) );	
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Cash.USD), new Cashflow(settlementDate, 100, Cash.EUR) );	
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Cash.USD), new Cashflow(settlementDate, 100.00001, Currency.USD) );	
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Cash.USD), new ContractScale(100, new ContractGet(settlementDate, Cash.USD)) );	
+		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate.plus(Days.days(1)), 100, Currency.USD) );	
+		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100, Currency.EUR) );	
+		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100.00001, Currency.USD) );	
+		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new ContractScale(100, new ContractGet(settlementDate, Cash.USD)) );	
 	}
 
 	@Test

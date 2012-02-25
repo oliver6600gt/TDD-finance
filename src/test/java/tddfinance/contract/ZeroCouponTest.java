@@ -14,19 +14,18 @@ public class ZeroCouponTest {
 	@Test
 	public void equalityTest() throws Exception {
 		LocalDate settlementDate = today;
-		assertEqualsStrict( new ZeroCoupon(settlementDate, 100, Cash.USD), new ZeroCoupon(settlementDate, 100, Cash.USD) );	
-		assertEqualsStrict( new ZeroCoupon(settlementDate, 100, Cash.USD), new ZeroCoupon(settlementDate, 100, Currency.USD) );	
-		assertEqualsStrict( new ZeroCoupon(settlementDate.plus(Years.years(1)), 100, Cash.USD), new ZeroCoupon(settlementDate.plus(Years.years(1)), 100, Cash.USD) );
+		assertEqualsStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ZeroCoupon(settlementDate, 100, Currency.USD) );	
+		assertEqualsStrict( new ZeroCoupon(settlementDate.plus(Years.years(1)), 100, Currency.USD), new ZeroCoupon(settlementDate.plus(Years.years(1)), 100, Currency.USD) );
 	}
 
 	@Test
 	public void InequalityTest() throws Exception {
 		LocalDate settlementDate = today;
-		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Cash.USD), new ZeroCoupon(settlementDate.plus(Days.days(1)), 100, Cash.USD) );	
-		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Cash.USD), new ZeroCoupon(settlementDate, 100, Cash.EUR) );	
-		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Cash.USD), new ZeroCoupon(settlementDate, 100.00001, Currency.USD) );	
-		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Cash.USD), new ContractScale(100, new ContractGet(settlementDate, Cash.USD)) );	
-		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Cash.USD), new Cashflow(settlementDate, 100, Cash.USD) );	
+		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ZeroCoupon(settlementDate.plus(Days.days(1)), 100, Currency.USD) );	
+		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ZeroCoupon(settlementDate, 100, Currency.EUR) );	
+		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ZeroCoupon(settlementDate, 100.00001, Currency.USD) );	
+		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ContractScale(100, new ContractGet(settlementDate, Cash.USD)) );	
+		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100, Currency.USD) );	
 	}
 
 	@Test

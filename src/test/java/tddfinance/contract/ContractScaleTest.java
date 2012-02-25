@@ -43,7 +43,7 @@ public class ContractScaleTest {
 	@Test
 	public void factorTest() throws Exception {
 		assertEquals(100, new ContractScale(100, Cash.USD).scaleFactor(), 1.0e-16);
-		assertEquals(100, new ContractScale(10,  new Cashflow(new LocalDate(), 10, Cash.USD)).scaleFactor(), 1.0e-16);
+		assertEquals(100, new ContractScale(10,  new Cashflow(new LocalDate(), 10, Currency.USD)).scaleFactor(), 1.0e-16);
 	}
 	
 	@Test

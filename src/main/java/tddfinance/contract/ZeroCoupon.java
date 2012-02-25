@@ -8,11 +8,7 @@ public class ZeroCoupon extends AbstractBaseContract implements Contract {
 	public ZeroCoupon(LocalDate settlementDate, double quantity, Currency currency) {
 		self = new Cashflow(settlementDate, quantity, currency);
 	}
-	
-	public ZeroCoupon(LocalDate settlementDate, double quantity, Cash cash) {
-		self = new Cashflow(settlementDate, quantity, cash);
-	}
-	
+
 	@Override
 	protected Contract representation() {
 		return self;

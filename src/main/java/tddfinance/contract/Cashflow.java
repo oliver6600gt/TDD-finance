@@ -11,10 +11,6 @@ public class Cashflow extends AbstractBaseContract implements Contract {
 	public Cashflow(LocalDate settlementDate, double quantity, Currency currency) {
 		self = new ContractScale(quantity, new ContractGet(settlementDate, new Cash(currency)));
 	}
-	
-	public Cashflow(LocalDate settlementDate, double quantity, Cash cash) {
-		self = new ContractScale(quantity, new ContractGet(settlementDate, cash));
-	}
 
 	@Override
 	protected Contract representation() {

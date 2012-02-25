@@ -63,8 +63,8 @@ public class ContractAddTest {
 		LocalDate today = new LocalDate(2011, 4, 4);
 
 		List<Contract> contracts = new ArrayList<Contract>();
-		contracts.add( new Cashflow(today.plus(Years.years(1)), 100, Cash.USD) );
-		contracts.add( new Cashflow(today.plus(Years.years(2)), 100, Cash.USD) );
+		contracts.add( new Cashflow(today.plus(Years.years(1)), 100, Currency.USD) );
+		contracts.add( new Cashflow(today.plus(Years.years(2)), 100, Currency.USD) );
 		contracts.add( Cash.USD );
 		contracts.add( Cash.EUR );
 
@@ -77,14 +77,14 @@ public class ContractAddTest {
 	public void nextContractTest() throws Exception {
 
 		ContractAdd oneCashflow    = new ContractAdd(
-			new Cashflow(today.plus(Years.years(2)), 100, Cash.USD)
+			new Cashflow(today.plus(Years.years(2)), 100, Currency.USD)
 		);
 		ContractAdd twoCashflows = new ContractAdd(
-			new Cashflow(today.plus(Years.years(1)), 100, Cash.USD),
+			new Cashflow(today.plus(Years.years(1)), 100, Currency.USD),
 			oneCashflow
 		);
 		ContractAdd threeCashflows  = new ContractAdd(
-			new Cashflow(today, 100, Cash.USD),
+			new Cashflow(today, 100, Currency.USD),
 			twoCashflows
 		);
 		
@@ -99,9 +99,9 @@ public class ContractAddTest {
 		 * Case 1
 		 */
 		Contract threeCashflows = new ContractAdd(
-			new Cashflow(today,                      100, Cash.USD),
-			new Cashflow(today.plus(Years.years(1)), 50, Cash.USD),
-			new Cashflow(today.plus(Years.years(2)), 60, Cash.USD)
+			new Cashflow(today,                      100, Currency.USD),
+			new Cashflow(today.plus(Years.years(1)), 50,  Currency.USD),
+			new Cashflow(today.plus(Years.years(2)), 60,  Currency.USD)
 		);
 		assertEquals( new PositionEffect(Cash.USD, 100), threeCashflows.nextSpunOffPositions() );
 		assertEquals( new PositionEffect(Cash.USD, 50),  threeCashflows.nextContract().nextSpunOffPositions() );
@@ -136,13 +136,13 @@ public class ContractAddTest {
 	public void nextEventTest() throws Exception {
 		LocalDate   today          = new LocalDate(2011,4,4);
 		ContractAdd threeCashflows = new ContractAdd(
-			new Cashflow(today,                      100, Cash.USD),
-			new Cashflow(today.plus(Years.years(1)), 100, Cash.USD),
-			new Cashflow(today.plus(Years.years(2)), 100, Cash.USD)
+			new Cashflow(today,                      100, Currency.USD),
+			new Cashflow(today.plus(Years.years(1)), 100, Currency.USD),
+			new Cashflow(today.plus(Years.years(2)), 100, Currency.USD)
 		);
 		ContractAdd twoCashflows  = new ContractAdd(
-			new Cashflow(today.plus(Years.years(1)), 100, Cash.USD),
-			new Cashflow(today.plus(Years.years(2)), 100, Cash.USD)
+			new Cashflow(today.plus(Years.years(1)), 100, Currency.USD),
+			new Cashflow(today.plus(Years.years(2)), 100, Currency.USD)
 		);
 
 		//The next event is to 1) lose the contract ContractGet(Cash.USD) (-1), and 2) really get Cash.USD(+1)
@@ -151,7 +151,7 @@ public class ContractAddTest {
 			threeCashflows.nextEvent().positionEffect());
 
 		ContractAdd oneCashflow = new ContractAdd(
-			new Cashflow(today.plus(Years.years(2)), 100, Cash.USD)
+			new Cashflow(today.plus(Years.years(2)), 100, Currency.USD)
 		);
 
 		assertEquals(

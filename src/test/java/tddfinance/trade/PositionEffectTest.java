@@ -115,14 +115,14 @@ public class PositionEffectTest {
 		
 		assertEquals(
 			new PositionEffect(
-				new Cashflow(today.plus(Years.years(1)), quantity, Cash.USD), 1,
-				new Cashflow(today.plus(Years.years(2)), quantity, Cash.USD), 1,
-				new Cashflow(today.plus(Years.years(3)), quantity, Cash.USD), 1
+				new Cashflow(today.plus(Years.years(1)), quantity, Currency.USD), 1,
+				new Cashflow(today.plus(Years.years(2)), quantity, Currency.USD), 1,
+				new Cashflow(today.plus(Years.years(3)), quantity, Currency.USD), 1
 			),
 			new PositionEffect(
-				new Cashflow(today.plus(Years.years(1)), quantity, Cash.USD), 1,
-				new Cashflow(today.plus(Years.years(2)), quantity, Cash.USD), 1,
-				new Cashflow(today.plus(Years.years(3)), quantity, Cash.USD), 1
+				new Cashflow(today.plus(Years.years(1)), quantity, Currency.USD), 1,
+				new Cashflow(today.plus(Years.years(2)), quantity, Currency.USD), 1,
+				new Cashflow(today.plus(Years.years(3)), quantity, Currency.USD), 1
 			)
 		);		
 	}
