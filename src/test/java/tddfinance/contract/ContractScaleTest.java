@@ -16,9 +16,6 @@ public class ContractScaleTest {
 	public void equalityTest() throws Exception {
 		assertEqualsStrict(new ContractScale( 10.0 * 100.0, Cash.USD ), new ContractScale(1000.0, new Cash("USD")));
 		assertEqualsStrict(new ContractScale( 100.0, Cash.USD ),        new ContractScale(100.0000000000000001, new Cash("USD")));
-
-		//commutative law
-		assertEquals( new ContractScale(Cash.USD, 100), new ContractScale(100, Cash.USD) );
 	}
 
 	@Test
@@ -42,7 +39,7 @@ public class ContractScaleTest {
 	@Test
 	public void factorTest() throws Exception {
 		assertEquals(100, new ContractScale(100, Cash.USD).scaleFactor(), 1.0e-16);
-		assertEquals(100, new ContractScale(10,  new Cashflow(new LocalDate(), 10, Currency.USD)).scaleFactor(), 1.0e-16);
+		assertEquals(10,  new ContractScale(10,  new Cashflow(new LocalDate(), 10, Currency.USD)).scaleFactor(), 1.0e-16);
 	}
 	
 	@Test

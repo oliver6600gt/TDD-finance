@@ -20,4 +20,7 @@ public class ConstNumeral implements Numeral {
 		return this.value;
 	}
 	
+	public String toString(){
+		return String.format( "const( %f )", value );
+	}
 }

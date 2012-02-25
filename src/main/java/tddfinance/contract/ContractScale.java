@@ -2,27 +2,29 @@ package tddfinance.contract;
 
 import org.joda.time.LocalDate;
 
+import tddfinance.numeral.ConstNumeral;
+import tddfinance.numeral.Numeral;
 import tddfinance.trade.PositionEffect;
 
 public class ContractScale implements Contract {
 	
 	private static final double equalityThreshold = 1.0e-16; 
 	
-	private final double   scaleFactor;
+	private final Numeral  scaleFactor;
 	private final Contract contractToScale;
 	
 	/**
 	 *  It does not flatten the inner contract even if contract is ContractScale
 	 */
 	public ContractScale( double scaleFactor, Contract contract ) {
-		this.scaleFactor     = scaleFactor;
+		this.scaleFactor     = new ConstNumeral( scaleFactor );
 		this.contractToScale = contract;	
 	}
-	
+
 	/**
-	 *  It does not flatten the inner contract even if contract is ContractScale 
+	 *  It does not flatten the inner contract even if contract is ContractScale
 	 */
-	public ContractScale( Contract contract, double scaleFactor ) {
+	public ContractScale( Numeral scaleFactor, Contract contract ) {
 		this.scaleFactor     = scaleFactor;
 		this.contractToScale = contract;	
 	}
@@ -49,7 +51,7 @@ public class ContractScale implements Contract {
 	}
 	
 	public String toString() {
-		return String.format("ContractScale(%.16f, %s)", scaleFactor, contractToScale);
+		return String.format("ContractScale(%s, %s)", scaleFactor, contractToScale);
 	}
 
 	public LocalDate maturityDate() {
@@ -57,10 +59,7 @@ public class ContractScale implements Contract {
 	}
 	
 	public double scaleFactor() {
-		if( isFungible() )
-			return scaleFactor * contractToScale.scaleFactor();
-		else
-			return 1;
+		return scaleFactor.getValue();
 	}
 	
 	public Contract unitContract() {
@@ -94,7 +93,7 @@ public class ContractScale implements Contract {
 		//Currently nextSpunOffPositions will only have fungible positions, so this implementation is okay
 		//However, if in the future nextSpunOffPositions can include non-fungibles
 		//be careful not to have non-1 quantity in positions effect
-		return contractToScale.nextSpunOffPositions().scale(scaleFactor);
+		return contractToScale.nextSpunOffPositions().scale(scaleFactor.getValue());
 	}
 	
 	public TradeEvent nextEvent() throws Exception{
@@ -104,6 +103,6 @@ public class ContractScale implements Contract {
 	}
 	
 	public double rawScaleFactor(){
-		return scaleFactor;
+		return scaleFactor.getValue();
 	}
 }
