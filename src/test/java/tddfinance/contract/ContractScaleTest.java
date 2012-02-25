@@ -39,7 +39,7 @@ public class ContractScaleTest {
 	@Test
 	public void factorTest() throws Exception {
 		assertEquals(100, new ContractScale(100, Cash.USD).scaleFactor(), 1.0e-16);
-		assertEquals(10,  new ContractScale(10,  new Cashflow(new LocalDate(), 10, Currency.USD)).scaleFactor(), 1.0e-16);
+		assertEquals(10,  new ContractScale(10,  new Cashflow(10, new LocalDate(), Currency.USD)).scaleFactor(), 1.0e-16);
 	}
 	
 	@Test
@@ -59,8 +59,8 @@ public class ContractScaleTest {
 			Cash.USD, 
 			new ContractScale(456, Cash.USD).unitContract() );
 		assertEquals( 
-			new Cashflow(today, 1, Currency.USD), 
-			new ContractScale(20.28, new Cashflow(today, 0.1, Currency.USD)).unitContract() );
+			new Cashflow(1, today, Currency.USD), 
+			new ContractScale(20.28, new Cashflow(0.1, today, Currency.USD)).unitContract() );
 
 		//Scale of non-fungible
 		assertEquals( 

@@ -54,7 +54,9 @@ public class AccruedInterestTest {
 
 	@Test
 	public void getValueTest() throws Exception {
-		assertEquals( 100*0.03*60.0/360, new AccruedInterest( 100, 0.03, new LocalDate( 2010, 4, 10 ), new LocalDate( 2010, 6, 10 ), new LocalDate( 2010, 7, 10 ), DayCount.DC_30360US, Compounding.QUARTERLY ).getValue(), 1.0e-8 );
+		assertEquals( 100*0.03*60.0/360, new AccruedInterest( 100, 0.03, new LocalDate( 2010, 4, 10 ), new LocalDate( 2010, 6, 10 ),  new LocalDate( 2010, 7, 10 ),  DayCount.DC_30360US, Compounding.QUARTERLY ).getValue(),   1.0e-8 );
+		assertEquals( 200*0.03*0.5,      new AccruedInterest( 200, 0.03, new LocalDate( 2010, 4, 10 ), new LocalDate( 2010, 10, 10 ), new LocalDate( 2010, 10, 10 ), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ).getValue(), 1.0e-8 );
+		assertEquals( 200*0.03*0.5,      new AccruedInterest( 200, 0.03, new LocalDate( 2010, 4, 10 ), new LocalDate( 2010, 10, 10 ), new LocalDate( 2010, 10, 10 ), DayCount.DC_30360US, Compounding.CONTINUOUS ).getValue(),  1.0e-8 );
 	}
 	
 }

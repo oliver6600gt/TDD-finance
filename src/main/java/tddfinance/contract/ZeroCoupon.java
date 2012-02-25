@@ -6,7 +6,7 @@ public class ZeroCoupon extends AbstractBaseContract implements Contract {
 	private final Cashflow self;
 	
 	public ZeroCoupon(LocalDate settlementDate, double quantity, Currency currency) {
-		self = new Cashflow(settlementDate, quantity, currency);
+		self = new Cashflow(quantity, settlementDate, currency);
 	}
 
 	@Override

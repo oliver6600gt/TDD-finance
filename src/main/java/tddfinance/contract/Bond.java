@@ -88,9 +88,9 @@ public class Bond extends AbstractBaseContract implements CashflowListInterface{
 		//coupons except the last coupon & redemption
 		while( !settlementDate.isAfter(maturityDate) ){
 			if( settlementDate.equals(maturityDate) )
-				couponList.add( new Cashflow(settlementDate, couponAmount + quantity, currency) ); //redemption
+				couponList.add( new Cashflow(couponAmount + quantity, settlementDate, currency) ); //redemption
 			else
-				couponList.add( new Cashflow(settlementDate, couponAmount, currency) );
+				couponList.add( new Cashflow(couponAmount, settlementDate, currency) );
 
 			settlementDate = settlementDate.plus( couponPeriod );
 		}

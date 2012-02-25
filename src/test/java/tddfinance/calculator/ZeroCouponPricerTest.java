@@ -21,8 +21,8 @@ public class ZeroCouponPricerTest {
 		assertEquals( 100,       ZeroCouponPricer.price( new ZeroCoupon(today, 100, Currency.USD),              today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL    ), 1.0e-6 );
 		assertEquals( 100,       ZeroCouponPricer.price( new ZeroCoupon(today, 100, Currency.USD),              today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.QUARTERLY ), 1.0e-6 );	
 
-		assertEquals( 95.238095, ZeroCouponPricer.price( new Cashflow(today.plusYears(1), 100, Currency.USD), today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL    ), 1.0e-6 );
-		assertEquals( 100,       ZeroCouponPricer.price( new Cashflow(today, 100, Currency.USD),              today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL    ), 1.0e-6 );
-		assertEquals( 100,       ZeroCouponPricer.price( new Cashflow(today, 100, Currency.USD),              today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.QUARTERLY ), 1.0e-6 );	
+		assertEquals( 95.238095, ZeroCouponPricer.price( new Cashflow(100, today.plusYears(1), Currency.USD), today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL    ), 1.0e-6 );
+		assertEquals( 100,       ZeroCouponPricer.price( new Cashflow(100, today, Currency.USD),              today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL    ), 1.0e-6 );
+		assertEquals( 100,       ZeroCouponPricer.price( new Cashflow(100, today, Currency.USD),              today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.QUARTERLY ), 1.0e-6 );	
 	} 
 }

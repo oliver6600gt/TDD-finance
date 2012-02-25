@@ -87,7 +87,7 @@ public class CashflowSet extends AbstractBaseContract implements CashflowListInt
 		
 		//coupons except the last coupon & redemption
 		while( !settlementDate.isAfter(maturityDate) ){
-			couponList.add( new Cashflow(settlementDate, couponAmount, currency) );
+			couponList.add( new Cashflow(couponAmount, settlementDate, currency) );
 			settlementDate = settlementDate.plus( couponPeriod );
 		}
 		

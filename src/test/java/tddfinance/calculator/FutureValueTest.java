@@ -18,9 +18,9 @@ public class FutureValueTest {
 	public void testName() throws Exception {
 		LocalDate today = new LocalDate(2001, 4, 1);
 		
-		assertEquals( 105.0,    FutureValue.calculate( new Cashflow(today.plus(Years.ONE), 100, Currency.USD),     today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL ), 1.0e-6 );	
-		assertEquals( 110.25,   FutureValue.calculate( new Cashflow(today.plus(Years.TWO), 100, Currency.USD),     today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL ), 1.0e-6 );	
-		assertEquals( 105.0,    FutureValue.calculate( new Cashflow(today.plus(Months.TWELVE), 100, Currency.USD), today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL ), 1.0e-6 );	
-		assertEquals( 105.0625, FutureValue.calculate( new Cashflow(today.plus(Months.TWELVE), 100, Currency.USD), today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.SEMI_ANNUAL ), 1.0e-6 );	
+		assertEquals( 105.0,    FutureValue.calculate( new Cashflow(100, today.plus(Years.ONE), Currency.USD),     today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL ), 1.0e-6 );	
+		assertEquals( 110.25,   FutureValue.calculate( new Cashflow(100, today.plus(Years.TWO), Currency.USD),     today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL ), 1.0e-6 );	
+		assertEquals( 105.0,    FutureValue.calculate( new Cashflow(100, today.plus(Months.TWELVE), Currency.USD), today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.ANNUAL ), 1.0e-6 );	
+		assertEquals( 105.0625, FutureValue.calculate( new Cashflow(100, today.plus(Months.TWELVE), Currency.USD), today, 0.05, DayCount.DC_ACTUAL_ACTUAL_ICMA, Compounding.SEMI_ANNUAL ), 1.0e-6 );	
 	}
 }

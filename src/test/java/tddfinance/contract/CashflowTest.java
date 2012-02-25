@@ -16,24 +16,24 @@ public class CashflowTest {
 	@Test
 	public void equalityTest() throws Exception {
 		LocalDate settlementDate = today;
-		assertEqualsStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100, Currency.USD) );	
-		assertEqualsStrict( new Cashflow(settlementDate.plus(Years.years(1)), 100, Currency.USD), new Cashflow(settlementDate.plus(Years.years(1)), 100, Currency.USD) );
+		assertEqualsStrict( new Cashflow(100, settlementDate, Currency.USD), new Cashflow(100, settlementDate, Currency.USD) );	
+		assertEqualsStrict( new Cashflow(100, settlementDate.plus(Years.years(1)), Currency.USD), new Cashflow(100, settlementDate.plus(Years.years(1)), Currency.USD) );
 	}
 
 	@Test
 	public void InequalityTest() throws Exception {
 		LocalDate settlementDate = today;
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate.plus(Days.days(1)), 100, Currency.USD) );	
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100, Currency.EUR) );	
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100.00001, Currency.USD) );	
-		assertInEqualStrict( new Cashflow(settlementDate, 100, Currency.USD), new ContractScale(100, new ContractGet(settlementDate, Cash.USD)) );	
+		assertInEqualStrict( new Cashflow(100, settlementDate, Currency.USD), new Cashflow(100, settlementDate.plus(Days.days(1)), Currency.USD) );	
+		assertInEqualStrict( new Cashflow(100, settlementDate, Currency.USD), new Cashflow(100, settlementDate, Currency.EUR) );	
+		assertInEqualStrict( new Cashflow(100, settlementDate, Currency.USD), new Cashflow(100.00001, settlementDate, Currency.USD) );	
+		assertInEqualStrict( new Cashflow(100, settlementDate, Currency.USD), new ContractScale(100, new ContractGet(settlementDate, Cash.USD)) );	
 	}
 
 	@Test
 	public void getterTest() throws Exception {
 		LocalDate settlementDate = today;
 		double    quantity       = 100;
-		Cashflow  cashflow       = new Cashflow( settlementDate, quantity, Currency.USD );
+		Cashflow  cashflow       = new Cashflow( quantity, settlementDate, Currency.USD );
 		assertEquals(settlementDate,  cashflow.settlementDate());
 		assertEquals(settlementDate,  cashflow.maturityDate());
 		assertEquals(quantity,        cashflow.quantity(), 1.0e-6);
@@ -42,18 +42,18 @@ public class CashflowTest {
 	
 	@Test
 	public void factorTest() throws Exception {
-		assertEquals(100, new Cashflow(today, 100, Currency.USD).scaleFactor(), 1.0e-16);
+		assertEquals(100, new Cashflow(100, today, Currency.USD).scaleFactor(), 1.0e-16);
 	}
 	
 	@Test
 	public void currencyTest() throws Exception {
-		assertEquals(Currency.USD, new Cashflow(today, 100, Currency.USD).currency());		
+		assertEquals(Currency.USD, new Cashflow(100, today, Currency.USD).currency());		
 	}
 	
 	@Test
 	public void nextEventDateTest() throws Exception {
 		LocalDate settlementDate = today;
-		Cashflow  cashflow       = new Cashflow( settlementDate, 500, Currency.USD );
+		Cashflow  cashflow       = new Cashflow( 500, settlementDate, Currency.USD );
 		
 		assertEquals(settlementDate, cashflow.nextEventDate());
 	}
@@ -62,7 +62,7 @@ public class CashflowTest {
 	public void nextEventTest() throws Exception {
 		LocalDate settlementDate = today;
 		double    quantity       = 100;
-		Cashflow  cashflow       = new Cashflow( settlementDate, quantity, Currency.USD );
+		Cashflow  cashflow       = new Cashflow( quantity, settlementDate, Currency.USD );
 
 		TradeEvent nextEvent = cashflow.nextEvent();
 		assertEquals(settlementDate, nextEvent.eventDate());
@@ -75,22 +75,22 @@ public class CashflowTest {
 
 	@Test
 	public void nextContractTest() throws Exception {
-		assertEquals(Contract.ZERO, new Cashflow(today, 100, Currency.USD).nextContract());
+		assertEquals(Contract.ZERO, new Cashflow(100, today, Currency.USD).nextContract());
 	}
 	
 	@Test
 	public void nextSpunOffPositions() throws Exception {
 		assertEquals( 
 			new PositionEffect(Cash.USD, 100), 
-			new Cashflow( today, 100, Currency.USD ).nextSpunOffPositions() );
+			new Cashflow( 100, today, Currency.USD ).nextSpunOffPositions() );
 
 		assertEquals( 
-			new PositionEffect(new Cashflow(today, 100, Currency.USD), 1), 
-			new ContractGet(today.minusDays(1), new Cashflow(today, 100, Currency.USD)).nextSpunOffPositions() );
+			new PositionEffect(new Cashflow(100, today, Currency.USD), 1), 
+			new ContractGet(today.minusDays(1), new Cashflow(100, today, Currency.USD)).nextSpunOffPositions() );
 
 		assertEquals( 
-			new PositionEffect(new Cashflow(today, 1, Currency.USD), 100), 
-			new ContractGet(today.minusDays(1), new Cashflow(today, 100, Currency.USD)).nextSpunOffPositions() );
+			new PositionEffect(new Cashflow(1, today, Currency.USD), 100), 
+			new ContractGet(today.minusDays(1), new Cashflow(100, today, Currency.USD)).nextSpunOffPositions() );
 	}
 
 //	@Test

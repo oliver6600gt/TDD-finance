@@ -59,14 +59,14 @@ public class CashflowSetTest {
 
 		//tenorStartDate = 2000-5-6, semi-annual => first coupon date = 2000-11-6
 		List<Contract> expectedCashflows = new ArrayList<Contract>();
-		expectedCashflows.add( new Cashflow(new LocalDate(2000,11,6), couponAmount, Currency.USD) );
-		expectedCashflows.add( new Cashflow(new LocalDate(2001,5,6),  couponAmount, Currency.USD) );
-		expectedCashflows.add( new Cashflow(new LocalDate(2001,11,6), couponAmount, Currency.USD) );
-		expectedCashflows.add( new Cashflow(new LocalDate(2002,5,6),  couponAmount, Currency.USD) );
-		expectedCashflows.add( new Cashflow(new LocalDate(2002,11,6), couponAmount, Currency.USD) );
-		expectedCashflows.add( new Cashflow(new LocalDate(2003,5,6),  couponAmount, Currency.USD) );
-		expectedCashflows.add( new Cashflow(new LocalDate(2003,11,6), couponAmount, Currency.USD) );
-		expectedCashflows.add( new Cashflow(new LocalDate(2004,5,6),  couponAmount, Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount, new LocalDate(2000,11,6), Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount,  new LocalDate(2001,5,6), Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount, new LocalDate(2001,11,6), Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount,  new LocalDate(2002,5,6), Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount, new LocalDate(2002,11,6), Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount,  new LocalDate(2003,5,6), Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount, new LocalDate(2003,11,6), Currency.USD) );
+		expectedCashflows.add( new Cashflow(couponAmount,  new LocalDate(2004,5,6), Currency.USD) );
 
 		assertEquals(expectedCashflows, cashflowSet.cashflowList());
 	}

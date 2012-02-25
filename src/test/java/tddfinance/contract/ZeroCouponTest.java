@@ -25,7 +25,7 @@ public class ZeroCouponTest {
 		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ZeroCoupon(settlementDate, 100, Currency.EUR) );	
 		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ZeroCoupon(settlementDate, 100.00001, Currency.USD) );	
 		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new ContractScale(100, new ContractGet(settlementDate, Cash.USD)) );	
-		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new Cashflow(settlementDate, 100, Currency.USD) );	
+		assertInEqualStrict( new ZeroCoupon(settlementDate, 100, Currency.USD), new Cashflow(100, settlementDate, Currency.USD) );	
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class ZeroCouponTest {
 	
 	@Test
 	public void currencyTest() throws Exception {
-		assertEquals(Currency.USD, new Cashflow(today, 100, Currency.USD).currency());		
+		assertEquals(Currency.USD, new Cashflow(100, today, Currency.USD).currency());		
 	}
 	
 	@Test
@@ -64,6 +64,6 @@ public class ZeroCouponTest {
 
 	@Test
 	public void cashflowTest() throws Exception {
-		assertEquals(new Cashflow(today, 100, Currency.USD), new ZeroCoupon(today, 100, Currency.USD).cashflow() );
+		assertEquals(new Cashflow(100, today, Currency.USD), new ZeroCoupon(today, 100, Currency.USD).cashflow() );
 	}
 }

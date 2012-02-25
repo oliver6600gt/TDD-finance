@@ -104,8 +104,8 @@ public class PositionEffectTest {
 
 		LocalDate today = new LocalDate(2011, 4, 4);
 		assertEquals(
-			new PositionEffect( new Cashflow(today, 1, Currency.USD ),   100 ),
-			new PositionEffect( new Cashflow(today, 100, Currency.USD ), 1 ) );
+			new PositionEffect( new Cashflow(1, today, Currency.USD ),   100 ),
+			new PositionEffect( new Cashflow(100, today, Currency.USD ), 1 ) );
 	}
 	
 	@Test
@@ -115,14 +115,14 @@ public class PositionEffectTest {
 		
 		assertEquals(
 			new PositionEffect(
-				new Cashflow(today.plus(Years.years(1)), quantity, Currency.USD), 1,
-				new Cashflow(today.plus(Years.years(2)), quantity, Currency.USD), 1,
-				new Cashflow(today.plus(Years.years(3)), quantity, Currency.USD), 1
+				new Cashflow(quantity, today.plus(Years.years(1)), Currency.USD), 1,
+				new Cashflow(quantity, today.plus(Years.years(2)), Currency.USD), 1,
+				new Cashflow(quantity, today.plus(Years.years(3)), Currency.USD), 1
 			),
 			new PositionEffect(
-				new Cashflow(today.plus(Years.years(1)), quantity, Currency.USD), 1,
-				new Cashflow(today.plus(Years.years(2)), quantity, Currency.USD), 1,
-				new Cashflow(today.plus(Years.years(3)), quantity, Currency.USD), 1
+				new Cashflow(quantity, today.plus(Years.years(1)), Currency.USD), 1,
+				new Cashflow(quantity, today.plus(Years.years(2)), Currency.USD), 1,
+				new Cashflow(quantity, today.plus(Years.years(3)), Currency.USD), 1
 			)
 		);		
 	}
