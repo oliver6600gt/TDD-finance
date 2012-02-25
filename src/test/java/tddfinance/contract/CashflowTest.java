@@ -8,6 +8,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.junit.Test;
 
+import tddfinance.numeral.ConstNumeral;
 import tddfinance.trade.PositionEffect;
 
 public class CashflowTest {
@@ -43,6 +44,12 @@ public class CashflowTest {
 	@Test
 	public void factorTest() throws Exception {
 		assertEquals(100, new Cashflow(100, today, Currency.USD).scaleFactor(), 1.0e-16);
+	}
+	
+	@Test
+	public void scaleFactorNumeralTest() throws Exception {
+		assertEquals(new ConstNumeral(100), new Cashflow(100, today, Currency.USD).quantityNumeral());
+		assertEquals(new ConstNumeral(200), new Cashflow(200, today, Currency.USD).quantityNumeral());
 	}
 	
 	@Test

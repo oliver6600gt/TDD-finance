@@ -22,7 +22,7 @@ public class Cashflow extends AbstractBaseContract implements Contract {
 	protected Contract representation() {
 		return self;
 	}
-
+	
 	public Contract unitContract() {
 		return new Cashflow( 1, settlementDate(), currency() );
 	}
@@ -37,12 +37,16 @@ public class Cashflow extends AbstractBaseContract implements Contract {
 
 	@Override
 	public String toString() {
-		return String.format( "Cashflow: %s %.2f on %s", currency(), quantity(), settlementDate() );
+		return String.format( "Cashflow: %s %s on %s", currency(), quantity(), settlementDate() );
 	}
 	
 	public double quantity(){    
 		return scaleFactor();	
 	};
+	
+	public Numeral quantityNumeral(){
+		return self.scaleFactorNumeral();
+	}
 	
 	public LocalDate settlementDate(){ 
 		return representation().maturityDate();	

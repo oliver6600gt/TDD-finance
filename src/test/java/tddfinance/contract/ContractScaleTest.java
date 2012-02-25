@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.junit.Test;
 
+import tddfinance.numeral.ConstNumeral;
 import tddfinance.trade.PositionEffect;
 
 import static org.junit.Assert.*;
@@ -40,6 +41,12 @@ public class ContractScaleTest {
 	public void factorTest() throws Exception {
 		assertEquals(100, new ContractScale(100, Cash.USD).scaleFactor(), 1.0e-16);
 		assertEquals(10,  new ContractScale(10,  new Cashflow(10, new LocalDate(), Currency.USD)).scaleFactor(), 1.0e-16);
+	}
+	
+	@Test
+	public void scaleFactorNumeralTest() throws Exception {
+		assertEquals(new ConstNumeral(100), new ContractScale(100, Cash.USD).scaleFactorNumeral());
+		assertEquals(new ConstNumeral(10),  new ContractScale(10,  new Cashflow(10, new LocalDate(), Currency.USD)).scaleFactorNumeral());
 	}
 	
 	@Test

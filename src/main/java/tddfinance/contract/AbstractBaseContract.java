@@ -34,7 +34,7 @@ public abstract class AbstractBaseContract implements Contract {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ": " + representation().toString();
+		return getClass().getSimpleName() + ":\n" + representation().toString();
 	}
 	
 	public LocalDate maturityDate() {

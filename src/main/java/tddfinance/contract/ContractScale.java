@@ -8,25 +8,23 @@ import tddfinance.trade.PositionEffect;
 
 public class ContractScale implements Contract {
 	
-	private static final double equalityThreshold = 1.0e-16; 
-	
-	private final Numeral  scaleFactor;
+	private final Numeral  scaleFactorNumeral;
 	private final Contract contractToScale;
 	
 	/**
 	 *  It does not flatten the inner contract even if contract is ContractScale
 	 */
 	public ContractScale( double scaleFactor, Contract contract ) {
-		this.scaleFactor     = new ConstNumeral( scaleFactor );
-		this.contractToScale = contract;	
+		this.scaleFactorNumeral = new ConstNumeral( scaleFactor );
+		this.contractToScale    = contract;	
 	}
 
 	/**
 	 *  It does not flatten the inner contract even if contract is ContractScale
 	 */
-	public ContractScale( Numeral scaleFactor, Contract contract ) {
-		this.scaleFactor     = scaleFactor;
-		this.contractToScale = contract;	
+	public ContractScale( Numeral scaleFactorNumeral, Contract contract ) {
+		this.scaleFactorNumeral = scaleFactorNumeral;
+		this.contractToScale    = contract;	
 	}
 
 	/**
@@ -39,8 +37,9 @@ public class ContractScale implements Contract {
 		if( obj instanceof ContractScale ){
 			ContractScale  theOther = (ContractScale) obj;
 			
-			double absoluteDiff = Math.abs( ( theOther.scaleFactor() - scaleFactor() ) / scaleFactor() );
-			return absoluteDiff < ContractScale.equalityThreshold && contractToScale.equals( theOther.contractToScale );
+			return 
+				this.contractToScale.equals(theOther.contractToScale) && 
+				scaleFactorNumeral.equals( theOther.scaleFactorNumeral );
 		}
 		else
 			return false;
@@ -51,7 +50,7 @@ public class ContractScale implements Contract {
 	}
 	
 	public String toString() {
-		return String.format("ContractScale(%s, %s)", scaleFactor, contractToScale);
+		return String.format("ContractScale(%s, %s)", scaleFactorNumeral, contractToScale);
 	}
 
 	public LocalDate maturityDate() {
@@ -59,7 +58,11 @@ public class ContractScale implements Contract {
 	}
 	
 	public double scaleFactor() {
-		return scaleFactor.getValue();
+		return scaleFactorNumeral.getValue();
+	}
+	
+	public Numeral scaleFactorNumeral() {
+		return scaleFactorNumeral;
 	}
 	
 	public Contract unitContract() {
@@ -86,14 +89,14 @@ public class ContractScale implements Contract {
 		if( nextSubContract.equals( Contract.ZERO ) )
 			return Contract.ZERO;
 		else
-			return new ContractScale( scaleFactor, nextSubContract );
+			return new ContractScale( scaleFactorNumeral, nextSubContract );
 	}
 
 	public PositionEffect nextSpunOffPositions() throws Exception{
 		//Currently nextSpunOffPositions will only have fungible positions, so this implementation is okay
 		//However, if in the future nextSpunOffPositions can include non-fungibles
 		//be careful not to have non-1 quantity in positions effect
-		return contractToScale.nextSpunOffPositions().scale(scaleFactor.getValue());
+		return contractToScale.nextSpunOffPositions().scale(scaleFactorNumeral.getValue());
 	}
 	
 	public TradeEvent nextEvent() throws Exception{
@@ -103,6 +106,6 @@ public class ContractScale implements Contract {
 	}
 	
 	public double rawScaleFactor(){
-		return scaleFactor.getValue();
+		return scaleFactorNumeral.getValue();
 	}
 }

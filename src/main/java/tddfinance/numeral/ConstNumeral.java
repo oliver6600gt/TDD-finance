@@ -4,6 +4,9 @@ package tddfinance.numeral;
  * A numeral class always returning the same constant which is passed to the constructor  
  */
 public class ConstNumeral implements Numeral {
+	
+	private static final double equalityThreshold = 1.0e-16; 
+
 	private final double value;
 	
 	/**
@@ -21,6 +24,19 @@ public class ConstNumeral implements Numeral {
 	}
 	
 	public String toString(){
-		return String.format( "const( %f )", value );
+		return String.format( "const( %.16f )", value );
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if( obj instanceof ConstNumeral ){
+			ConstNumeral theOther = (ConstNumeral) obj;
+			
+			double absoluteDiff = Math.abs( ( theOther.getValue() - this.getValue() ) / this.getValue() );
+			return absoluteDiff < ConstNumeral.equalityThreshold;
+		}
+		else
+			return false;
 	}
 }

@@ -2,6 +2,7 @@ package tddfinance.contract;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -81,7 +82,12 @@ public class ContractAdd implements Contract {
 
 	@Override
 	public String toString() {
-		return contracts.toString();
+		StringBuilder builder = new StringBuilder();
+		for (Contract c : contracts) {
+			builder.append( c.toString() ).append( "\n" );
+		}
+			
+		return builder.toString();
 	}
 	
 	public Contract unitContract() {
