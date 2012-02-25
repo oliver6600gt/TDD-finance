@@ -13,7 +13,8 @@ import tddfinance.day.DayCountConvention;
  */
 public class AccruedInterest implements Numeral {
 
-	private final Numeral            couponRate;    //being numeral for flexibility to handle a floating-rate coupon 
+	private final Numeral            faceValue;     //being numeral for flexibility (e.g.) amortization?
+	private final Numeral            couponRate;    //being numeral for flexibility to handle a floating-rate coupon
 	private final LocalDate          accrualStartDate;
 	private final LocalDate          accrualEndDate;
 	private final LocalDate          nextCouponDate;
@@ -21,7 +22,8 @@ public class AccruedInterest implements Numeral {
 	private final DayCountConvention dayCountConvention;
 	
 	
-	public AccruedInterest( double fixedCouponRate, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextCouponDate, DayCountConvention convention, Compounding compounding ) {
+	public AccruedInterest( double faceValue, double fixedCouponRate, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextCouponDate, DayCountConvention convention, Compounding compounding ) {
+		this.faceValue          = new ConstNumeral( faceValue );
 		this.couponRate         = new ConstNumeral( fixedCouponRate );
 		this.accrualStartDate   = accrualStartDate;
 		this.accrualEndDate     = accrualEndDate;
@@ -30,6 +32,14 @@ public class AccruedInterest implements Numeral {
 		this.compounding        = compounding;
 	}
 	
+	public double faceValue() {
+		return this.faceValue.getValue();
+	}
+
+	public double couponRate() {
+		return this.couponRate.getValue();
+	}
+
 	public LocalDate accrualStartDate(){
 		return this.accrualStartDate;
 	}
@@ -42,10 +52,6 @@ public class AccruedInterest implements Numeral {
 		return this.nextCouponDate;
 	}
 
-	public double couponRate() {
-		return this.couponRate.getValue();
-	}
-
 	public DayCountConvention dayCountConvention(){
 		return this.dayCountConvention;
 	}
@@ -55,6 +61,6 @@ public class AccruedInterest implements Numeral {
 	}
 	
 	public double getValue() {
-		return DayCount.fraction(DayCount.DC_30360US, accrualStartDate, accrualEndDate, nextCouponDate, Compounding.QUARTERLY);
+		return faceValue() * couponRate() * DayCount.fraction(DayCount.DC_30360US, accrualStartDate, accrualEndDate, nextCouponDate, Compounding.QUARTERLY);
 	}
 }
