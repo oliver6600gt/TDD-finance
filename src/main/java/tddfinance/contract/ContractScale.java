@@ -8,95 +8,93 @@ public class ContractScale implements Contract {
 	
 	private static final double equalityThreshold = 1.0e-16; 
 	
-	private final double   thisScaleFactor;
-	private final Contract subContract;
+	private final double   scaleFactor;
+	private final Contract contractToScale;
 	
+	/**
+	 *  It does not flatten the inner contract even if contract is ContractScale
+	 */
 	public ContractScale( double scaleFactor, Contract contract ) {
-		if(contract instanceof ContractScale){
-			ContractScale scale  = (ContractScale) contract;
-			this.subContract     = scale.subContract;
-			this.thisScaleFactor = scaleFactor * contract.scaleFactor();			
-		}
-		else{
-			this.thisScaleFactor = scaleFactor;
-			this.subContract     = contract;	
-		}
+		this.scaleFactor     = scaleFactor;
+		this.contractToScale = contract;	
 	}
 	
+	/**
+	 *  It does not flatten the inner contract even if contract is ContractScale 
+	 */
 	public ContractScale( Contract contract, double scaleFactor ) {
-		if(contract instanceof ContractScale){
-			ContractScale scale  = (ContractScale) contract;
-			this.subContract     = scale.subContract;
-			this.thisScaleFactor = scaleFactor * contract.scaleFactor();			
-		}
-		else{
-			this.thisScaleFactor = scaleFactor;
-			this.subContract     = contract;	
-		}
+		this.scaleFactor     = scaleFactor;
+		this.contractToScale = contract;	
 	}
 
+	/**
+	 *  ContractScale( 100, c ) != ContractScale( 10, ContractScale( 10, c ) ). Counter-intuitive? 
+	 *  <p>
+	 *  However, the constructor does not "flatten" the inner ContractScale.
+	 *  And it distinguishes two contracts like ContractScale( 100, c ) and ContractScale( 10, ContractScale( Price Of X, c ) ) where the price of X happens to be 10.  
+	 */
 	public boolean equals(Object obj) {
 		if( obj instanceof ContractScale ){
 			ContractScale  theOther = (ContractScale) obj;
 			
 			double absoluteDiff = Math.abs( ( theOther.scaleFactor() - scaleFactor() ) / scaleFactor() );
-			return absoluteDiff < ContractScale.equalityThreshold && subContract.equals( theOther.subContract );
+			return absoluteDiff < ContractScale.equalityThreshold && contractToScale.equals( theOther.contractToScale );
 		}
 		else
-			return super.equals(obj);
+			return false;
 	}
 	
 	public int hashCode() {
-		return new Double(scaleFactor()).hashCode() * 31 + subContract.hashCode();
+		return new Double(scaleFactor()).hashCode() * 31 + contractToScale.hashCode();
 	}
 	
 	public String toString() {
-		return String.format("ContractScale(%.16f, %s)", thisScaleFactor, subContract);
+		return String.format("ContractScale(%.16f, %s)", scaleFactor, contractToScale);
 	}
 
 	public LocalDate maturityDate() {
-		return subContract.maturityDate(); 
+		return contractToScale.maturityDate(); 
 	}
 	
 	public double scaleFactor() {
 		if( isFungible() )
-			return thisScaleFactor * subContract.scaleFactor();
+			return scaleFactor * contractToScale.scaleFactor();
 		else
 			return 1;
 	}
 	
 	public Contract unitContract() {
 		if( isFungible() )
-			return subContract.unitContract();
+			return contractToScale.unitContract();
 		else
 			return this;
 	}
 
 	public boolean isFungible() {
-		return subContract.isFungible();
+		return contractToScale.isFungible();
 	}
 
 	public Currency currency() {
-		return subContract.currency();
+		return contractToScale.currency();
 	}
 	
 	public LocalDate nextEventDate() {
-		return subContract.nextEventDate();
+		return contractToScale.nextEventDate();
 	}
 
 	public Contract nextContract() {
-		Contract nextSubContract = subContract.nextContract();
+		Contract nextSubContract = contractToScale.nextContract();
 		if( nextSubContract.equals( Contract.ZERO ) )
 			return Contract.ZERO;
 		else
-			return new ContractScale( thisScaleFactor, nextSubContract );
+			return new ContractScale( scaleFactor, nextSubContract );
 	}
 
 	public PositionEffect nextSpunOffPositions() throws Exception{
 		//Currently nextSpunOffPositions will only have fungible positions, so this implementation is okay
 		//However, if in the future nextSpunOffPositions can include non-fungibles
 		//be careful not to have non-1 quantity in positions effect
-		return subContract.nextSpunOffPositions().scale(thisScaleFactor);
+		return contractToScale.nextSpunOffPositions().scale(scaleFactor);
 	}
 	
 	public TradeEvent nextEvent() throws Exception{
@@ -106,6 +104,6 @@ public class ContractScale implements Contract {
 	}
 	
 	public double rawScaleFactor(){
-		return thisScaleFactor;
+		return scaleFactor;
 	}
 }

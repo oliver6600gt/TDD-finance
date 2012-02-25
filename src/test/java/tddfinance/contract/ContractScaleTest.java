@@ -17,14 +17,8 @@ public class ContractScaleTest {
 		assertEqualsStrict(new ContractScale( 10.0 * 100.0, Cash.USD ), new ContractScale(1000.0, new Cash("USD")));
 		assertEqualsStrict(new ContractScale( 100.0, Cash.USD ),        new ContractScale(100.0000000000000001, new Cash("USD")));
 
-		//associative low, million USD
-		assertEquals( new ContractScale(10000.0, new ContractScale( 100.0, Cash.USD )), new ContractScale(1000.0, new ContractScale( 1000.0, Cash.USD )) );
-		assertEquals( new ContractScale(10000.0, new ContractScale( 100.0, Cash.USD )), new ContractScale(1000000.0, Cash.USD) );
-
 		//commutative law
 		assertEquals( new ContractScale(Cash.USD, 100), new ContractScale(100, Cash.USD) );
-
-		//distributiveLawTest
 	}
 
 	@Test
@@ -32,6 +26,11 @@ public class ContractScaleTest {
 		assertInEqualStrict(new ContractScale( 100, Cash.USD ), new ContractScale( 100, Cash.EUR ));
 		assertInEqualStrict(new ContractScale( 100, Cash.USD ), new ContractScale( 100.00000001, Cash.USD ));
 		assertInEqualStrict(new ContractScale( 100, Cash.USD ), new ContractScale(100, new ContractGet(new LocalDate(2011,4,4), Cash.USD)));
+		
+		//Counter-intuitive? See the comment of the ContracScale's equalsTo() method. 
+		assertInEqualStrict(
+			new ContractScale(10000.0, new ContractScale( 100.0,  Cash.USD )), 
+			new ContractScale(1000.0,  new ContractScale( 1000.0, Cash.USD )) );
 	}
 
 	@Test
