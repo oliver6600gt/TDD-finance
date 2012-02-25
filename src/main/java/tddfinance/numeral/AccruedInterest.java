@@ -22,7 +22,7 @@ public class AccruedInterest implements Numeral {
 	
 	
 	public AccruedInterest( double fixedCouponRate, LocalDate accrualStartDate, LocalDate accrualEndDate, LocalDate nextCouponDate, DayCountConvention convention, Compounding compounding ) {
-		this.couponRate         = new ConstantNumeral( fixedCouponRate );
+		this.couponRate         = new ConstNumeral( fixedCouponRate );
 		this.accrualStartDate   = accrualStartDate;
 		this.accrualEndDate     = accrualEndDate;
 		this.nextCouponDate     = nextCouponDate;

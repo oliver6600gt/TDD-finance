@@ -3,13 +3,13 @@ package tddfinance.numeral;
 /**
  * A numeral class always returning the same constant which is passed to the constructor  
  */
-public class ConstantNumeral implements Numeral {
+public class ConstNumeral implements Numeral {
 	private final double value;
 	
 	/**
 	 * @param value : value to be returned by getValue()
 	 */
-	public ConstantNumeral( double value ) {
+	public ConstNumeral( double value ) {
 		this.value = value;
 	}
 	
