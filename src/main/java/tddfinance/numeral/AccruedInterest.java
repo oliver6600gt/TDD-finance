@@ -63,4 +63,23 @@ public class AccruedInterest implements Numeral {
 	public double getValue() {
 		return faceValue() * couponRate() * DayCount.fraction(DayCount.DC_30360US, accrualStartDate, accrualEndDate, nextCouponDate, Compounding.QUARTERLY);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if( obj instanceof AccruedInterest ){
+			AccruedInterest theOther = (AccruedInterest) obj;
+			
+			return 
+				faceValue.equals(theOther.faceValue)      //Comparison in Numeral, not double
+				&& couponRate.equals(theOther.couponRate) //Comparison in Numeral, not double
+				&& accrualStartDate().equals(theOther.accrualStartDate())
+				&& accrualEndDate().equals(theOther.accrualEndDate())
+				&& nextCouponDate().equals(theOther.nextCouponDate())
+				&& dayCountConvention().equals(theOther.dayCountConvention())
+				&& compoundingRule().equals(theOther.compoundingRule());
+		}
+		else
+			return false;
+	}
+	
 }

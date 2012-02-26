@@ -24,7 +24,7 @@ public class ConstNumeral implements Numeral {
 	}
 	
 	public String toString(){
-		return String.format( "const( %.16f )", value );
+		return String.format( "const( %f )", value );
 	}
 	
 	@Override

@@ -1,14 +1,58 @@
 package tddfinance.numeral;
 
 import static org.junit.Assert.*;
+import static tddfinance.util.Assertion.*;
 
 import org.joda.time.LocalDate;
+import org.joda.time.Months;
 import org.junit.Test;
 
 import tddfinance.day.Compounding;
 import tddfinance.day.DayCount;
 
 public class AccruedInterestTest {
+
+	static final LocalDate today = new LocalDate(2010, 4, 1);
+	
+	@Test
+	public void equalityTest() throws Exception {
+		assertEquals( 
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ), 
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ) 
+		);
+	}
+
+	@Test
+	public void InequalityTest() throws Exception {
+		assertInEqual(
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ), 
+			new AccruedInterest( 0.04, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ) 
+		);
+		assertInEqual(
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ), 
+			new AccruedInterest( 0.05, 200, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ) 
+		);
+		assertInEqual(
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ), 
+			new AccruedInterest( 0.1,   50, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ) 
+		);
+		assertInEqual(
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO),   today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ), 
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.THREE), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ) 
+		);
+		assertInEqual(
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX),   DayCount.DC_30360US, Compounding.ANNUAL ), 
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.THREE), DayCount.DC_30360US, Compounding.ANNUAL ) 
+		);
+		assertInEqual(
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US,    Compounding.SEMI_ANNUAL ), 
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30E360ICMA, Compounding.SEMI_ANNUAL ) 
+		);
+		assertInEqual(
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.SEMI_ANNUAL ), 
+			new AccruedInterest( 0.05, 100, today, today.plus(Months.TWO), today.plus(Months.SIX), DayCount.DC_30360US, Compounding.ANNUAL ) 
+		);
+	}
 	
 	@Test
 	public void accrualStartDateTest() {
